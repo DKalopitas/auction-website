@@ -1,4 +1,4 @@
-package com.dkalopitas.backend;
+package com.auction_website.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
