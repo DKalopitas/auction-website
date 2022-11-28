@@ -2,7 +2,9 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Routes, Route} from 'react-router';
+import HomepageComponent from './components/HomepageComponent';
 import ListUserComponent from './components/ListUserComponent';
+import SignUpComponent from './components/SignUpComponent';
 
 function App() {
   return (
@@ -10,8 +12,9 @@ function App() {
       <Router>
         <div className="container">
           <Routes>
-            {/* <Route path='/' exact element={<ListUserComponent/>}/> */}
+            <Route exact path='/' element={<HomepageComponent/>}/>
             <Route path='/users' element={<ListUserComponent/>}/>
+            <Route path='/sign-up' element={<SignUpComponent/>}/>
           </Routes>
         </div>
       </Router>
