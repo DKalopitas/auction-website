@@ -8,12 +8,7 @@ class HomepageComponent extends Component {
         this.state = {
 
         }
-        // this.createUser = this.createUser.bind(this);
     }
-
-    // createUser() {
-    //     browserHistory.push('/sign-up');
-    // }
 
     render() {
         return (
