@@ -1,18 +1,26 @@
 package com.auction_website.backend.model;
 
 import jakarta.persistence.*;
-//import java.util.Collection;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import javax.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.Hibernate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+
+@Getter @Setter @NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String username;
     private String password;
     private String firstName;
@@ -21,9 +29,10 @@ public class User {
     private String phoneNumber;
     private String address;
     private String taxIdNumber;
-
-    public User() {
-    }
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private Boolean locked;
+    private Boolean enabled;
 
     public User(String username,
                 String password,
@@ -32,7 +41,10 @@ public class User {
                 String email,
                 String phoneNumber,
                 String address,
-                String taxIdNumber) {
+                String taxIdNumber,
+                UserRole userRole,
+                Boolean locked,
+                Boolean enabled) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -41,102 +53,57 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.taxIdNumber = taxIdNumber;
+        this.userRole = userRole;
+        this.locked = locked;
+        this.enabled = enabled;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(authority);
     }
 
-    public void setId(long id) {
-        this.id = id;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
     public String getUsername() {
         return username;
     }
 
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return false;
-//    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
-//
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getTaxIdNumber() {
-        return taxIdNumber;
-    }
-
-    public void setTaxIdNumber(String taxIdNumber) {
-        this.taxIdNumber = taxIdNumber;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
