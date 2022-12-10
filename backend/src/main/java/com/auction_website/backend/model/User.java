@@ -44,7 +44,8 @@ public class User implements UserDetails {
                 String taxIdNumber,
                 UserRole userRole,
                 Boolean locked,
-                Boolean enabled) {
+                Boolean enabled
+    ) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
