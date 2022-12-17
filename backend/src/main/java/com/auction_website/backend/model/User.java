@@ -42,9 +42,7 @@ public class User implements UserDetails {
                 String phoneNumber,
                 String address,
                 String taxIdNumber,
-                UserRole userRole,
-                Boolean locked,
-                Boolean enabled
+                UserRole userRole
     ) {
         this.username = username;
         this.password = password;
@@ -55,8 +53,6 @@ public class User implements UserDetails {
         this.address = address;
         this.taxIdNumber = taxIdNumber;
         this.userRole = userRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     @Override
