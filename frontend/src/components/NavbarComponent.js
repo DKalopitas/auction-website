@@ -27,6 +27,11 @@ export default function NavbarComponent() {
                             </Link>
                         </li>
                         <li className="nav-item">
+                            <Link to="/log-in" className="nav-link">
+                                Log In
+                            </Link>
+                        </li>
+                        <li className="nav-item">
                             <Link to="/sign-up" className="nav-link">
                                 Sign Up
                             </Link>
