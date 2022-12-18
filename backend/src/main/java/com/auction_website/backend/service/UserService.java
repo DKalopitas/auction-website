@@ -3,12 +3,10 @@ package com.auction_website.backend.service;
 import com.auction_website.backend.model.User;
 import com.auction_website.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public String signUpUser(User user) {
+    public String signUpUser(User user, PasswordEncoder encoder) {
         boolean userExists = userRepository
                 .findByUsername(user.getUsername())
                 .isPresent();
@@ -42,7 +40,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException("Username already taken");
         }
 
-        String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        String encodedPassword = encoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
         userRepository.save(user);

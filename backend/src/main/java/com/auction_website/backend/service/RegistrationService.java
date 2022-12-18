@@ -4,6 +4,7 @@ import com.auction_website.backend.model.User;
 import com.auction_website.backend.model.UserRole;
 import com.auction_website.backend.request.RegistrationRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     public String register(RegistrationRequest request) {
         return userService.signUpUser(new User(
@@ -23,6 +25,6 @@ public class RegistrationService {
                 request.getAddress(),
                 request.getTaxIdNumber(),
                 UserRole.USER
-        ));
+        ), passwordEncoder);
     }
 }
