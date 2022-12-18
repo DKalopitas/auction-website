@@ -5,6 +5,7 @@ import com.auction_website.backend.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,21 +17,14 @@ public class UserController {
 
     private final UserService userService;
 
-//    @Autowired
-//    private UserRepository userRepository;
-
-//    @GetMapping("/users")
-//    public List<User> getUsers() {
-//        return userService.getUsers();
-//    }
+    @GetMapping()
+    public String greet() {
+        return "Hello /api/v1/";
+    }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-//    @PostMapping("/users")
-//    public User createUser(@RequestBody User user) {
-//        return userRepository.save(user);
-//    }
 }
