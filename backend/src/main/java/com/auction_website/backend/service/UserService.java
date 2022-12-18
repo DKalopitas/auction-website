@@ -14,8 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final static String USER_NOT_FOUND_MSG =
-            "User with username %s not found";
     private final UserRepository userRepository;
 
     @Override
@@ -23,7 +21,8 @@ public class UserService implements UserDetailsService {
             throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
-                        String.format(USER_NOT_FOUND_MSG, username))
+                        String.format("User with username %s not found",
+                                username))
                 );
     }
 
@@ -45,7 +44,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
 
-        return "sign up works";
+        return "User Signed Up";
     }
 
 }
