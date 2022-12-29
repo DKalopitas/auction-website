@@ -1,18 +1,19 @@
-import { useRef, useState, useEffect, useContext } from 'react';
-import AuthContext from "../context/AuthProvider";
+import { useRef, useState, useEffect } from 'react';
+import useAuth from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
+import jwt from 'jwt-decode';
 import axios from '../api/axios';
 
-const LOGIN_URL = '/login';
+const LOGIN_URL = '/auth/token';
 
 const LogInComponent = () => {
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
     const usernameRef = useRef();
-    const errRef = useRef();
+    const errorRef = useRef();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errMsg, setErrMsg] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
@@ -20,41 +21,40 @@ const LogInComponent = () => {
     }, [])
 
     useEffect(() => {
-        setErrMsg('');
+        setErrorMsg('');
     }, [username, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(LOGIN_URL, {},
-                // JSON.stringify({ username, password}),
-                {params: {username: username, password: password}},
+            const response = await axios.post(LOGIN_URL,
+                JSON.stringify({ username, password }),
                 {
-                    // headers: { 'Content-Type': 'application/json' },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
+            // console.log(jwt(response?.data)?.scope);
+            const accessToken = response?.data;
+            const roles = jwt(response?.data)?.scope;
             setAuth({ username, password, roles, accessToken });
             setUsername('');
             setPassword('');
             setSuccess(true);
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
-            } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+        } catch (error) {
+            console.log(error);
+            if (!error?.response) {
+                setErrorMsg('No Server Response');
+            } else if (error.response?.status === 400) {
+                setErrorMsg('Missing Username or Password');
+            } else if (error.response?.status === 401) {
+                setErrorMsg('Invalid Username or Password');
             } else {
-                setErrMsg('Login Failed');
+                setErrorMsg('Login Failed');
             }
-            errRef.current.focus();
+            errorRef.current.focus();
         }
     }
 
@@ -69,38 +69,65 @@ const LogInComponent = () => {
                     </p>
                 </section>
             ) : (
-                <section>
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                    <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            id="username"
-                            ref={usernameRef}
-                            autoComplete="off"
-                            onChange={(e) => setUsername(e.target.value)}
-                            value={username}
-                            required
-                        />
+                <section className="vh-100 gradient-custom">
+                    <div className="container py-5 h-100">
+                        <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col-12 col-md-8 col-lg-6 col-xl-5">
+                            <div className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
+                            <div className="card-body p-5 text-center">
 
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            required
-                        />
-                        <button>Sign In</button>
-                    </form>
-                    <p>
-                        Need an Account?<br />
-                        <span className="line">
-                            {/*put router link here*/}
-                            <Link to="/sign-up">Sign Up</Link>
-                        </span>
-                    </p>
+                                <div className="mb-md-5 mt-md-4 pb-5">
+
+                                <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
+                                <p className="text-white-50 mb-5">Please enter your username and password!</p>
+                                
+                                <div className="form-outline form-white mb-4">
+                                    <label className="form-label" htmlFor="username">Username</label>
+                                    <input type="text"
+                                        id="username"
+                                        ref={usernameRef}
+                                        autoComplete="off"
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        value={username}
+                                        required 
+                                        className="form-control form-control-lg"
+                                    />
+                                </div>
+
+                                <div className="form-outline form-white mb-4">
+                                    <label className="form-label" htmlFor="typePasswordX">Password</label>
+                                    <input type="password" 
+                                        id="typePasswordX"
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        value={password}
+                                        required
+                                        className="form-control form-control-lg"
+                                    />
+                                </div>
+
+                                <p className="small mb-5 pb-lg-2"><a className="text-white-50" href="#!">Forgot password?</a></p>
+
+                                <button className="btn btn-outline-light btn-lg px-5" type="submit" onClick={handleSubmit}>Login</button>
+
+                                <div ref={errorRef} 
+                                className={errorMsg ? "errmsg" : "offscreen"}
+                                aria-live="assertive"
+                                style={{color: "red", marginTop: "4rem"}}
+                                >
+                                    {errorMsg}
+                                </div>
+                                </div>
+
+                                <div>
+                                <p className="mb-0">Don't have an account? <a href="#!" className="text-white-50 fw-bold">Sign Up</a>
+                                </p>
+                                </div>
+
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </section>
             )}
         </>

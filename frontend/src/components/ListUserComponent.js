@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import UserService from '../services/UserService';
+// import UserService from '../services/UserService';
+import useAxiosPrivate from '../hooks/useAxiosPrivate'
 
 function ListUserComponent() {
     const [users, setUsers] = useState([]);
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
-        const fetchData = () => {
-            UserService.getUsers().then(function(response) {
-                setUsers(response.data)
-            });
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const fetchData = async() => {
+            try {
+                const response = await axiosPrivate.get('/users', {})
+                // console.log(response.data);
+                isMounted && setUsers(response.data);
+            } catch(error) {
+                console.error(error);
+            }
+            // UserService.getUsers().then(function(response) {
+            //     setUsers(response.data)
+            // });
         }
-    
         fetchData();
-    }, []);
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, [axiosPrivate]);
 
     return (
         <div>
