@@ -1,40 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { useIsAuthenticated } from 'react-auth-kit';
+import { useAuthUser } from "react-auth-kit";
+import { useSignOut } from "react-auth-kit";
 
 export default function NavbarComponent() {
-    const { setAuth } = useAuth();
-    const { auth } = useAuth();
+    const auth = useAuthUser();
+    const signOut = useSignOut();
+    const isAuthenticated = useIsAuthenticated();
 
     function handleLogOut() {
-        setAuth({});
+        signOut();
     }
 
     function logInController() {
-        if (auth.roles === 'USER') {
-            return(
-                <li className="nav-item">
-                    <Link to="/" className="nav-link" onClick={handleLogOut}>
-                        Log Out
-                    </Link>
-                </li>
-            )
-        }
-        if (auth.roles === 'ADMIN') {
-            return(
-                <React.Fragment>
-                    <li className="nav-item">
-                        <Link to="/users" className="nav-link">
-                            Users
-                        </Link>
-                    </li>
+        // console.log(authent().roles);
+        if (isAuthenticated()) {
+            if (auth().roles === 'USER') {
+                return(
                     <li className="nav-item">
                         <Link to="/" className="nav-link" onClick={handleLogOut}>
                             Log Out
                         </Link>
                     </li>
-                </React.Fragment>
-            )
+                )
+            }
+            if (auth().roles === 'ADMIN') {
+                return(
+                    <React.Fragment>
+                        <li className="nav-item">
+                            <Link to="/users" className="nav-link">
+                                Users
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/" className="nav-link" onClick={handleLogOut}>
+                                Log Out
+                            </Link>
+                        </li>
+                    </React.Fragment>
+                )
+            }
         }
         return(
             <React.Fragment>

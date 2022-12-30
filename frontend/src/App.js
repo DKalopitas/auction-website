@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter as Router} from 'react-router-dom';
 import {Routes, Route} from 'react-router';
-import {AuthProvider} from './context/AuthProvider'
+import { AuthProvider } from 'react-auth-kit';
 import HomepageComponent from './components/HomepageComponent';
 import ListUserComponent from './components/ListUserComponent';
 import SignUpComponent from './components/SignUpComponent';
@@ -12,7 +12,12 @@ import LogInComponent from './components/LogInComponent';
 function App() {
   return (
     <div>
-      <AuthProvider>
+      <AuthProvider 
+      authType = {'cookie'}
+      authName={'_auth'}
+      cookieDomain={window.location.hostname}
+      cookieSecure={false}
+      >
         <Router>
           <NavbarComponent />
           <div className="container">
