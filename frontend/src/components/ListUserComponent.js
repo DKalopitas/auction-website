@@ -18,9 +18,6 @@ function ListUserComponent() {
             } catch(error) {
                 console.error(error);
             }
-            // UserService.getUsers().then(function(response) {
-            //     setUsers(response.data)
-            // });
         }
         fetchData();
 

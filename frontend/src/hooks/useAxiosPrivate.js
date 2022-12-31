@@ -1,17 +1,15 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
-import useAuth from "./useAuth";
+import { useAuthHeader } from "react-auth-kit";
 
 const useAxiosPrivate = () => {
-    const { auth } = useAuth();
+    const authHeader = useAuthHeader();
 
     useEffect(() => {
 
         const requestIntercept = axiosPrivate.interceptors.request.use(
             config => {
-                if (!config.headers['Authorization']) {
-                    config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
-                }
+                config.headers['Authorization'] = authHeader();
                 return config;
             }, (error) => Promise.reject(error)
         );
@@ -19,7 +17,7 @@ const useAxiosPrivate = () => {
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
         }
-    }, [auth])
+    }, [authHeader])
 
     return axiosPrivate;
 }

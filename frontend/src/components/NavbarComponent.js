@@ -14,7 +14,6 @@ export default function NavbarComponent() {
     }
 
     function logInController() {
-        // console.log(authent().roles);
         if (isAuthenticated()) {
             if (auth().roles === 'USER') {
                 return(
