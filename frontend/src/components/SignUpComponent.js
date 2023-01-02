@@ -139,12 +139,12 @@ function SignUpComponent() {
                         withCredentials: true
                     }
                 );
-                console.log(response?.data);
+                console.log(response.status);
                 if (response?.data === "User Signed Up") {
-                    navigate("/");
+                    // navigate("/");
                 }
             } catch (err) {
-                console.log(err);
+                console.log(err?.response?.status);
                 // if (!err?.response) {
                 //     setErrMsg('No Server Response');
                 // } else if (err.response?.status === 409) {

@@ -36,7 +36,7 @@ const LogInComponent = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            // console.log(JSON.stringify(response?.data));
             const accessToken = response?.data;
             const roles = jwt(response?.data)?.scope;
             signIn({
@@ -49,7 +49,7 @@ const LogInComponent = () => {
             setPassword('');
             navigate("/");
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             if (!error?.response) {
                 setErrorMsg('No Server Response');
             } else if (error.response?.status === 400) {

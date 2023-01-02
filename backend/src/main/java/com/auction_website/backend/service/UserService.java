@@ -3,6 +3,8 @@ package com.auction_website.backend.service;
 import com.auction_website.backend.model.User;
 import com.auction_website.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,13 +32,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public String signUpUser(User user, PasswordEncoder encoder) {
+    public ResponseEntity<?> signUpUser(User user, PasswordEncoder encoder) {
         boolean userExists = userRepository
                 .findByUsername(user.getUsername())
                 .isPresent();
 
         if (userExists) {
-            return "Username already taken";
+//            throw new IllegalStateException();
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         String encodedPassword = encoder.encode(user.getPassword());
@@ -44,7 +47,8 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
 
-        return "User Signed Up";
+//        return "User Signed Up";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

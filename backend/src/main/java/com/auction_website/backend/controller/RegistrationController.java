@@ -3,6 +3,7 @@ package com.auction_website.backend.controller;
 import com.auction_website.backend.request.RegistrationRequest;
 import com.auction_website.backend.service.RegistrationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +14,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
 
     @PostMapping
-    public String register(@RequestBody RegistrationRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
     }
 

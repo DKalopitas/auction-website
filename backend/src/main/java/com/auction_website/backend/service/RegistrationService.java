@@ -7,6 +7,7 @@ import com.auction_website.backend.request.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
-    public String register(RegistrationRequest request) {
+    public ResponseEntity<?> register(RegistrationRequest request) {
         return userService.signUpUser(new User(
                 request.username(),
                 request.password(),
