@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
                 .isPresent();
 
         if (userExists) {
-            throw new IllegalStateException("Username already taken");
+            return "Username already taken";
         }
 
         String encodedPassword = encoder.encode(user.getPassword());
