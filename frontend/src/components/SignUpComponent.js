@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from '../api/axios';
 import FormInput from './FormInput';
@@ -11,6 +11,8 @@ const REGISTER_URL = '/registration';
 function SignUpComponent() {
 
     const navigate = useNavigate();
+    const errorRef = useRef();
+    const [errorMessage, setErrorMessage] = useState('');
     const [validated, setValidated] = useState(false);
 
     const [values, setValues] = useState({
@@ -124,6 +126,10 @@ function SignUpComponent() {
             required: true,
         },
     ];
+
+    useEffect(() => {
+        setErrorMessage('');
+    }, [values])
     
     const handleSubmit = async (e) => {
         const form = e.currentTarget;
@@ -145,14 +151,14 @@ function SignUpComponent() {
                 }
             } catch (err) {
                 console.log(err?.response?.status);
-                // if (!err?.response) {
-                //     setErrMsg('No Server Response');
-                // } else if (err.response?.status === 409) {
-                //     setErrMsg('Username Taken');
-                // } else {
-                //     setErrMsg('Registration Failed')
-                // }
-                // errRef.current.focus();
+                if (!err?.response) {
+                    setErrorMessage('No Server Response');
+                } else if (err.response?.status === 409) {
+                    setErrorMessage('Username Taken');
+                } else {
+                    setErrorMessage('Registration Failed')
+                }
+                errorRef.current.focus();
             }
         }
     };
@@ -183,7 +189,15 @@ function SignUpComponent() {
 
                             <div className="d-flex justify-content-center">
                             <Button type="submit"
-                                className="btn btn-outline-light btn-lg px-5">Sign Up</Button>
+                                className="btn btn-outline-light btn-lg px-5 mt-4">Sign Up</Button>
+                            </div>
+
+                            <div ref={errorRef} 
+                            className={errorMessage ? "errorMessage text-center" : "offscreen"}
+                            aria-live="assertive"
+                            style={{color: "red", marginTop: "2rem"}}
+                            >
+                                {errorMessage}
                             </div>
 
                             <p className="text-center text-muted mt-5 mb-0">Already have an account? 
