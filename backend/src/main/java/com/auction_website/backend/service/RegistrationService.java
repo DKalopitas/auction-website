@@ -7,7 +7,6 @@ import com.auction_website.backend.request.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +20,14 @@ public class RegistrationService {
 
     public String register(RegistrationRequest request) {
         return userService.signUpUser(new User(
-                request.getUsername(),
-                request.getPassword(),
-                request.getFirstName(),
-                request.getLastName(),
-                request.getEmail(),
-                request.getPhoneNumber(),
-                request.getAddress(),
-                request.getTaxIdNumber(),
+                request.username(),
+                request.password(),
+                request.firstName(),
+                request.lastName(),
+                request.email(),
+                request.phoneNumber(),
+                request.address(),
+                request.taxIdNumber(),
                 UserRole.USER
         ), passwordEncoder);
     }
