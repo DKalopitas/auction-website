@@ -28,14 +28,13 @@ function ListUserComponent() {
     }, [axiosPrivate]);
 
     return (
-        <div>
+        <div className="text-center">
             <h2 className='text-center'>Users List</h2>
-            <div className='row'>
-                <table className='table table-striped table-border'>
-                    <thead>
+                <table className="table table-hover mt-4">
+                    <thead className="bg-light">
                         <tr>
-                            <th>Username</th>
-                            <th>Email</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,14 +42,15 @@ function ListUserComponent() {
                             users.map(
                                 user => 
                                 <tr key={user.id}>
-                                    <td>{user.username}</td>
+                                    <td>
+                                        {user.username}
+                                    </td>
                                     <td>{user.email}</td>
                                 </tr>
                             )
                         }
                     </tbody>
                 </table>
-            </div>
         </div>
     );
 }

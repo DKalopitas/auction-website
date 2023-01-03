@@ -7,6 +7,7 @@ import { RequireAuth } from 'react-auth-kit'
 import HomepageComponent from './components/HomepageComponent';
 import ListUserComponent from './components/ListUserComponent';
 import SignUpComponent from './components/SignUpComponent';
+import PostSignUpComponent from './components/PostSignUpComponent';
 import NavbarComponent from './components/NavbarComponent';
 import LogInComponent from './components/LogInComponent';
 
@@ -21,14 +22,16 @@ function App() {
       <Router>
         <NavbarComponent />
           <Routes>
-            <Route exact path='/' element={<HomepageComponent />}/>
+            <Route exact path='/' element={<HomepageComponent />} />
             <Route path='/users' element={
               <RequireAuth loginPath={'/log-in'}>
                 <ListUserComponent />
               </RequireAuth>
-            }/>
-            <Route path='/sign-up' element={<SignUpComponent />}/>
-            <Route path='/log-in' element={<LogInComponent />}/>
+              }
+            />
+            <Route path='/sign-up' element={<SignUpComponent />} />
+            <Route path='/sign-up-success' element={<PostSignUpComponent />} />
+            <Route path='/log-in' element={<LogInComponent />} />
           </Routes>
       </Router>
     </AuthProvider>

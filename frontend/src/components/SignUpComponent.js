@@ -145,12 +145,10 @@ function SignUpComponent() {
                         withCredentials: true
                     }
                 );
-                console.log(response.status);
-                if (response?.data === "User Signed Up") {
-                    // navigate("/");
-                }
+                // console.log(response.status);
+                navigate("/sign-up-success");
             } catch (err) {
-                console.log(err?.response?.status);
+                // console.log(err?.response?.status);
                 if (!err?.response) {
                     setErrorMessage('No Server Response');
                 } else if (err.response?.status === 409) {
