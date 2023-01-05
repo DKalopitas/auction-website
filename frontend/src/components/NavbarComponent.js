@@ -17,16 +17,28 @@ export default function NavbarComponent() {
         if (isAuthenticated()) {
             if (auth().roles === 'USER') {
                 return(
-                    <li className="nav-item">
-                        <Link to="/" className="nav-link" onClick={handleLogOut}>
-                            Log Out
-                        </Link>
-                    </li>
+                    <React.Fragment>
+                        <li className="nav-item">
+                            <Link to="/profile" className="nav-link">
+                                Profile
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/" className="nav-link" onClick={handleLogOut}>
+                                Log Out
+                            </Link>
+                        </li>
+                    </React.Fragment>
                 )
             }
             if (auth().roles === 'ADMIN') {
                 return(
                     <React.Fragment>
+                        <li className="nav-item">
+                            <Link to="/profile" className="nav-link">
+                                Profile
+                            </Link>
+                        </li>
                         <li className="nav-item">
                             <Link to="/users" className="nav-link">
                                 Users
