@@ -19,7 +19,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
+    public User loadUserByUsername(String username)
             throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
@@ -38,7 +38,6 @@ public class UserService implements UserDetailsService {
                 .isPresent();
 
         if (userExists) {
-//            throw new IllegalStateException();
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
@@ -47,7 +46,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(encodedPassword);
         userRepository.save(user);
 
-//        return "User Signed Up";
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
