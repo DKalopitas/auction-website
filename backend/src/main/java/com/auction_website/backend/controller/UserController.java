@@ -3,8 +3,6 @@ package com.auction_website.backend.controller;
 import com.auction_website.backend.model.User;
 import com.auction_website.backend.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,15 +30,6 @@ public class UserController {
     public ResponseEntity<?> getUser(@PathVariable("username") String username) {
         return new ResponseEntity<>(userService.loadUserByUsername(username), HttpStatus.OK);
     }
-
-//    @GetMapping("{username}")
-//    public ResponseEntity<?> getUser(@PathVariable("username") String username, Authentication authentication) {
-//        if (authentication.getName().equals(username)
-//                || authentication.getAuthorities().contains("SCOPE_ADMIN")) {
-//            return new ResponseEntity<>(userService.loadUserByUsername(username), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
 
     @GetMapping("/profile")
     public Map<String, String> getCurrentUser(Authentication authentication) {
