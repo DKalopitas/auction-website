@@ -29,8 +29,8 @@ function ListUserComponent() {
 
     return (
         <div className="text-center">
-            <h2 className='text-center'>Users List</h2>
-                <table className="table table-hover mt-4">
+            <h2 className="mt-5">Users List</h2>
+                <table className="table table-dark table-hover mt-4">
                     <thead className="bg-light">
                         <tr>
                             <th scope="col">Username</th>
