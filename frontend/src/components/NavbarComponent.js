@@ -27,7 +27,7 @@ export default function NavbarComponent() {
                         </ul>
                         <ul className="navbar-nav fs-5 align-items-center">
                             <li className="nav-item dropdown">
-                                <button className="btn btn-dark nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show" data-bs-toggle="dropdown">
+                                <button className="btn btn-dark nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                                     <i className="fas fa-user"></i>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark text-center">
@@ -61,7 +61,7 @@ export default function NavbarComponent() {
                         </ul>
                         <ul className="navbar-nav fs-5 align-items-center">
                             <li className="nav-item dropdown">
-                                <button className="btn btn-dark nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show" data-bs-toggle="dropdown">
+                                <button className="btn btn-dark nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
                                     <i className="fas fa-user"></i>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark text-center">

@@ -10,6 +10,7 @@ import SignUpComponent from './components/SignUpComponent';
 import PostSignUpComponent from './components/PostSignUpComponent';
 import NavbarComponent from './components/NavbarComponent';
 import LogInComponent from './components/LogInComponent';
+import UserManagement from './components/UserManagement'
 import UserProfile from './components/UserProfile';
 
 function App() {
@@ -27,6 +28,12 @@ function App() {
             <Route path='/users' element={
               <RequireAuth loginPath={'/log-in'}>
                 <ListUserComponent />
+              </RequireAuth>
+              }
+            />
+            <Route path='/users/:user' element={
+              <RequireAuth loginPath={'/log-in'}>
+                <UserManagement />
               </RequireAuth>
               }
             />

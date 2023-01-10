@@ -99,7 +99,14 @@ function UserProfile() {
                 </div>
             </div>
 
-            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div className="modal fade" 
+            id="staticBackdrop" 
+            data-bs-backdrop="static" 
+            data-bs-keyboard="false" 
+            tabIndex="-1" 
+            aria-labelledby="staticBackdropLabel" 
+            aria-hidden="true"
+            >
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content bg-dark text-white rounded-3">
                 <div className="text-center m-2">
