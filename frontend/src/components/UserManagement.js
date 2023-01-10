@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 function UserManagement() {
 
     const { state } = useLocation();
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
     const [user, setUser] = useState({});
 
     useEffect(() => {
@@ -28,6 +29,15 @@ function UserManagement() {
             controller.abort();
         }
     }, [axiosPrivate, state.username]);
+
+    const handleDelete = () => {
+            try {
+                axiosPrivate.delete(`users/${user.id}`, {})
+                navigate("/users")
+            } catch(error) {
+                console.error(error);
+            }
+    }
 
     return (
         <div>
@@ -71,6 +81,7 @@ function UserManagement() {
                                                             type="button"
                                                             className="btn btn-dark mt-4 mb-2 p-2"
                                                             title="Delete Account"
+                                                            onClick={handleDelete}
                                                             >
                                                                 <i className="fa-solid fa-trash fa-2x text-danger"></i>
                                                             </button>
