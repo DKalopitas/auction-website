@@ -59,4 +59,14 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    public void updateUser(Long id, User user) {
+        boolean userExists = userRepository.existsById(id);
+        if (!userExists) {
+            throw new IllegalStateException(
+                    "User with id " + id + "doesn't exist!"
+            );
+        }
+        userRepository.save(user);
+    }
+
 }

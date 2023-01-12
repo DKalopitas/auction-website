@@ -18,9 +18,4 @@ public class RegistrationController {
         return registrationService.register(request);
     }
 
-    @GetMapping
-    public String greet() {
-        return "Hello Registration!";
-    }
-
 }
