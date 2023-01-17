@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User loadUserByUsername(String username)
@@ -31,7 +34,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<?> signUpUser(User user, PasswordEncoder encoder) {
+    public ResponseEntity<?> signUpUser(User user) {
         boolean userExists = userRepository
                 .findByUsername(user.getUsername())
                 .isPresent();
@@ -40,7 +43,7 @@ public class UserService implements UserDetailsService {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
-        String encodedPassword = encoder.encode(user.getPassword());
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(encodedPassword);
         userRepository.save(user);
@@ -64,6 +67,10 @@ public class UserService implements UserDetailsService {
             throw new IllegalStateException(
                     "User with id " + id + "doesn't exist!"
             );
+        }
+        String password = loadUserByUsername(user.getUsername()).getPassword();
+        if (!password.equals(user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userRepository.save(user);
     }

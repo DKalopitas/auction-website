@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public ResponseEntity<?> register(RegistrationRequest request) {
@@ -30,7 +28,7 @@ public class RegistrationService {
                 request.address(),
                 request.taxIdNumber(),
                 UserRole.USER
-        ), passwordEncoder);
+        ));
     }
 
     @Bean
@@ -51,7 +49,7 @@ public class RegistrationService {
                     UserRole.ADMIN
             );
             admin.setEnabled(true);
-            userService.signUpUser(admin, passwordEncoder);
+            userService.signUpUser(admin);
         };
     }
 

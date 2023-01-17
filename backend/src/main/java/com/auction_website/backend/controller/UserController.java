@@ -1,5 +1,6 @@
 package com.auction_website.backend.controller;
 
+import com.auction_website.backend.model.User;
 import com.auction_website.backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,16 @@ public class UserController {
             return new ResponseEntity<>(userService.loadUserByUsername(username), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("{userId}")
+    public void updateUser(@PathVariable("userId") Long id, @RequestBody User user) {
+        userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("{userId}")
+    public void deleteUser(@PathVariable("userId") Long id) {
+        userService.deleteUser(id);
     }
 
 }

@@ -31,13 +31,13 @@ function App() {
               </RequireAuth>
               }
             />
-            <Route path='/users/:user' element={
+            <Route path='/users/:username' element={
               <RequireAuth loginPath={'/log-in'}>
                 <UserManagement />
               </RequireAuth>
               }
             />
-            <Route path='/profile' element={
+            <Route path='/:username' element={
               <RequireAuth loginPath={'/log-in'}>
                 <UserProfile />
               </RequireAuth>

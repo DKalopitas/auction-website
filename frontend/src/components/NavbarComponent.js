@@ -32,7 +32,7 @@ export default function NavbarComponent() {
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark text-center">
                                     <li>
-                                        <Link to="/profile" className="dropdown-item">
+                                        <Link to={auth().name} className="dropdown-item">
                                             Profile
                                         </Link>
                                     </li>
@@ -66,7 +66,7 @@ export default function NavbarComponent() {
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark text-center">
                                     <li>
-                                        <Link to="/profile" className="dropdown-item">
+                                        <Link to={auth().name} className="dropdown-item">
                                             Profile
                                         </Link>
                                     </li>

@@ -28,12 +28,8 @@ function ListUserComponent() {
         }
     }, [axiosPrivate]);
 
-    const handleActivation = () => {
-        
-    }
-
     const handleSelection = (username) => {
-        navigate(`/users/${username}`, {state:{username}});
+        navigate(`/users/${username}`);
     }
 
     return (
@@ -47,14 +43,12 @@ function ListUserComponent() {
                                 <th scope="col">Username</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                users.map(
-                                    user => 
-                                    <tr key={user.id} role="button" onClick={ () => handleSelection(user.username)}>
+                                users.map(user => 
+                                    <tr key={user.id} role="button" onClick={ () => handleSelection(user.username) }>
                                             <td>{user.username}</td>
                                             <td>{user.email}</td>
                                             <td>
@@ -62,38 +56,6 @@ function ListUserComponent() {
                                                     user.enabled ? <span className="badge rounded-pill text-bg-success px-3 d-inline">Active</span>
                                                     : <span className="badge rounded-pill text-bg-warning d-inline">Awaiting</span>
                                                 }
-                                            </td>
-                                            <td>
-                                                {
-                                                    (() => {
-                                                        if (user.username === "admin") {
-                                                            return (null);
-                                                        } else {
-                                                            return (
-                                                                <button
-                                                                type="button"
-                                                                className="btn btn-link btn-dark btn-rounded btn-sm fw-bold"
-                                                                title={ user.enabled ? "Disable Account" : "Enable Account" }
-                                                                onClick={handleActivation}
-                                                                >
-                                                                    { 
-                                                                        user.enabled ? <i className="fa-solid fa-xmark text-danger"></i>
-                                                                        : <i className="fa-solid fa-check text-success"></i>
-                                                                    }
-                                                                </button>
-                                                            );
-                                                        }
-                                                    })()
-                                                }
-                                                
-                                                {/* <button
-                                                type="button"
-                                                className="btn btn-link btn-dark btn-rounded btn-sm fw-bold"
-                                                title="Delete Account"
-                                                onClick={handleDelete}
-                                                >
-                                                    <i className="fa-solid fa-trash text-danger"></i>
-                                                </button> */}
                                             </td>
                                     </tr>
                                 )
