@@ -4,13 +4,49 @@ import { useSignOut } from 'react-auth-kit';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod';
+
+const schema = z.object({
+    id: z.number(),
+    userRole: z.string(),
+    enabled: z.boolean(),
+    locked: z.boolean(),
+    password: z.string(),
+    firstName: z.string()
+        .min(1, { message: "First Name is required" })
+        .min(3, { message: "First Name must contain at least 3 characters" })
+        .max(16, { message: "First Name must contain at most 16 characters" }),
+    lastName: z.string()
+        .min(1, { message: "Last Name is required" })
+        .min(3, { message: "Last Name must contain at least 3 characters" })
+        .max(16, { message: "Last Name must contain at most 16 characters" }),
+    email: z.string().email()
+        .min(1, { message: "Email is required" }),
+    phoneNumber: z.string()
+        .min(1, { message: "Phone Number is required" })
+        .regex(/^[0-9]*$/, { message: "Phone Number must only contain digits" })
+        .length(10, { message: "Phone Number must contain 10 digits" }),
+    address: z.string()
+        .min(1, { message: "Address is required" })
+        .regex(/[A-Za-z]{3,16}\s?[A-Za-z]{0,16},?\s?[0-9]{1,3}/, { message: "Invalid Address" }),
+    taxIdNumber: z.string()
+        .min(1, { message: "Tax ID is required" })
+        .regex(/^[0-9]*$/, { message: "Tax ID must only contain digits" })
+        .length(9, { message: "Tax ID must contain 9 digits" }),
+    username: z.string()
+        .min(1, { message: "Username is required" })
+        .min(3, { message: "Username must contain at least 3 characters" })
+        .max(16, { message: "Username must contain at most 16 characters" })
+        .regex(/^([A-Za-z0-9]_?)*$/, { message: "Invalid Username" })
+});
 
 function UserProfile() {
 
     const { pathname } = useLocation();
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const signOut = useSignOut();
-    const axiosPrivate = useAxiosPrivate();
     const [user, setUser] = useState({});
     const [request, setRequest] = useState({});
     const labels = {
@@ -22,8 +58,10 @@ function UserProfile() {
         taxIdNumber: "Tax ID",
         username: "Username",
         enabled: "Account Enabled"
-    }
-    const { register, handleSubmit, setValue } = useForm();
+    };
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm(
+        { resolver: zodResolver(schema) }
+    );
 
     useEffect(() => {
         let isMounted = true;
@@ -194,9 +232,9 @@ function UserProfile() {
                     <h1 className="modal-title fs-3" id="staticBackdropLabel">Edit</h1>
                     <hr className="text-info mt-1 w-25 mx-auto"></hr>
                 </div>
-                <div className="modal-body px-5">
+                <div className="modal-body">
                     <form onSubmit={handleSubmit(handleSave)}>
-                        <div className="row text-center">
+                        <div className="row text-center px-4">
                         {
                             Object.keys(request).map(key => {
                                 if (key === "id"
@@ -210,18 +248,19 @@ function UserProfile() {
                                 }
                                 return (
                                     <div key={key} className="col-sm-6 mb-4 pb-2 mx-auto">
-                                        <p className="font-weight-bold mb-2 pb-1">{labels[key]}</p>
+                                        <p className="font-weight-bold mb-1">{labels[key]}</p>
                                         <input 
                                         className="form-control"
                                         defaultValue={request[key]}
                                         {...register(key)}
                                         />
+                                        <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
                                     </div>
                                 );
                             })
                         }
                         </div>
-                        <div className="d-flex justify-content-between mt-5 mb-4">
+                        <div className="d-flex justify-content-between mt-5 mb-3 mx-3">
                             <button type="button" className="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" className="btn btn-success px-3" data-bs-dismiss="modal">Save All</button>
                         </div>
