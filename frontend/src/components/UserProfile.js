@@ -7,7 +7,7 @@ import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
 
-const schema = z.object({
+const updateUserForm = z.object({
     id: z.number(),
     userRole: z.string(),
     enabled: z.boolean(),
@@ -41,6 +41,23 @@ const schema = z.object({
         .regex(/^([A-Za-z0-9]_?)*$/, { message: "Invalid Username" })
 });
 
+const updatePasswordForm = z
+    .object({
+        password: z.string()
+            .min(1, { message: "Password is required" })
+            .min(10, { message: "Password must contain at least 10 characters" })
+            .max(24, { message: "Password must contain at most 24 characters" })
+            .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]*$/, {
+            message: "Password must contain at least 1 lower case, 1 upper case, 1 number & 1 special character" 
+            }),
+        confirmPassword: z.string()
+            .min(1, { message: "Confirm Password is required" })
+    })
+    .refine((data) => data.password === data.confirmPassword, { 
+        message: "Passwords don't match",
+        path: ["confirmPassword"]
+    });
+
 function UserProfile() {
 
     const { pathname } = useLocation();
@@ -59,9 +76,25 @@ function UserProfile() {
         username: "Username",
         enabled: "Account Enabled"
     };
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm(
-        { resolver: zodResolver(schema) }
-    );
+    const { register, 
+        handleSubmit, 
+        setValue, 
+        reset,
+        formState: { errors } 
+    } = useForm({ 
+        resolver: zodResolver(updateUserForm), 
+        mode: "onTouched", 
+        defaultValues: request,
+        values: request
+    });
+    const { register: registerPwd, 
+        handleSubmit: handleSubmitPwd, 
+        reset: resetPwd, 
+        formState: { errors: errorsPwd } 
+    } = useForm({ 
+        resolver: zodResolver(updatePasswordForm), 
+        mode: "onTouched"
+    });
 
     useEffect(() => {
         let isMounted = true;
@@ -92,7 +125,7 @@ function UserProfile() {
         });
     }, [user])
 
-    const handleSave = (formValues) => {
+    const handleEdit = (formValues) => {
         try {
             axiosPrivate.put(String(user.id), formValues);
         } catch(error) {
@@ -106,26 +139,25 @@ function UserProfile() {
         navigate(0);
     }
 
-    const handlePassword = (e) => {
-        e.preventDefault();
-        console.log(request);
-        try {
-            axiosPrivate.put(String(user.id), request);
-        } catch(error) {
-            console.error(error);
-        }
-        signOut();
-        navigate("/log-in");
+    const handlePassword = (formValues) => {
+        console.log(formValues);
+        // try {
+        //     axiosPrivate.put(String(user.id), request);
+        // } catch(error) {
+        //     console.error(error);
+        // }
+        // signOut();
+        // navigate("/log-in");
     }
 
     const handleDelete = () => {
         try {
             axiosPrivate.delete(String(user.id), {})
-            signOut();
-            navigate("/");
         } catch(error) {
             console.error(error);
         }
+        signOut();
+        navigate("/");
     }
 
     return (
@@ -233,7 +265,7 @@ function UserProfile() {
                     <hr className="text-info mt-1 w-25 mx-auto"></hr>
                 </div>
                 <div className="modal-body">
-                    <form onSubmit={handleSubmit(handleSave)}>
+                    <form onSubmit={handleSubmit(handleEdit)}>
                         <div className="row text-center px-4">
                         {
                             Object.keys(request).map(key => {
@@ -251,8 +283,7 @@ function UserProfile() {
                                         <p className="font-weight-bold mb-1">{labels[key]}</p>
                                         <input 
                                         className="form-control"
-                                        defaultValue={request[key]}
-                                        {...register(key)}
+                                        { ...register(key) }
                                         />
                                         <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
                                     </div>
@@ -261,8 +292,21 @@ function UserProfile() {
                         }
                         </div>
                         <div className="d-flex justify-content-between mt-5 mb-3 mx-3">
-                            <button type="button" className="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" className="btn btn-success px-3" data-bs-dismiss="modal">Save All</button>
+                            <button 
+                            type="button" 
+                            className="btn btn-secondary px-3" 
+                            data-bs-dismiss="modal" 
+                            onClick={ () => { reset() } }
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                            type="submit" 
+                            className="btn btn-success px-3" 
+                            data-bs-dismiss="modal"
+                            >
+                                Save All
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -286,22 +330,41 @@ function UserProfile() {
                     </div>
                     <div className="modal-body text-center">
                         <p className="mb-5">Changing your password will result in log out.</p>
-                        <form onSubmit={handlePassword}>
+                        <form onSubmit={handleSubmitPwd(handlePassword)}>
                             <div className="col-sm-6 mb-4 pb-2 mx-auto">
                                 <p className="font-weight-bold mb-2 pb-1">New Password</p>
-                                <input className="form-control" type="password" />
+                                <input 
+                                className="form-control" 
+                                type="text"
+                                { ...registerPwd("password") }
+                                />
+                                <div className="text-danger mt-1">{errorsPwd["password"]?.message}</div>
                             </div>
                             <div className="col-sm-6 mb-4 pb-2 mx-auto">
                                 <p className="font-weight-bold mb-2 pb-1">Confirm Password</p>
                                 <input 
                                 className="form-control"
-                                type="password"
-                                onChange={(e) => {setRequest({...request, password: e.target.value})}}
+                                type="text"
+                                { ...registerPwd("confirmPassword") }
                                 />
+                                <div className="text-danger mt-1">{errorsPwd["confirmPassword"]?.message}</div>
                             </div>
                             <div className="d-flex justify-content-between mt-5 pt-4 mb-4 mx-4">
-                                <button type="button" className="btn btn-secondary px-3" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" className="btn btn-success px-3" data-bs-dismiss="modal">Save</button>
+                                <button 
+                                type="button" 
+                                className="btn btn-secondary px-3" 
+                                data-bs-dismiss="modal"
+                                onClick={ () => { resetPwd() } }
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                type="submit" 
+                                className="btn btn-success px-3" 
+                                data-bs-dismiss="modal"
+                                >
+                                    Save
+                                </button>
                             </div>
                         </form>
                     </div>
