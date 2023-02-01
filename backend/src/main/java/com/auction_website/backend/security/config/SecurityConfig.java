@@ -60,9 +60,9 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v*/auth/**").permitAll()
+                        .requestMatchers("/api/v*/authentication/**").permitAll()
                         .requestMatchers("/api/v*/registration/**").permitAll()
-                        .requestMatchers("/api/v*/users").hasAuthority("SCOPE_ADMIN")
+                        .requestMatchers("/api/v*/users/**").hasAuthority("SCOPE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement()

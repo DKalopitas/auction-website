@@ -106,4 +106,13 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void updatePassword(Long id, String newPassword) {
+        User user = userRepository.getReferenceById(id);
+        if (newPassword != null && !passwordEncoder.matches(newPassword, user.getPassword())) {
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            user.setPassword(encodedPassword);
+            userRepository.save(user);
+        }
+    }
+
 }

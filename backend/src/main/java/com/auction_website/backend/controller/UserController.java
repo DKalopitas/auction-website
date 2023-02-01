@@ -29,6 +29,11 @@ public class UserController {
         userService.updateUser(id, userDTO);
     }
 
+    @PutMapping("{userId}/reset-password")
+    public void updatePassword(@PathVariable("userId") Long id, @RequestParam String newPassword) {
+        userService.updatePassword(id, newPassword);
+    }
+
     @DeleteMapping("{userId}")
     public void deleteUser(@PathVariable("userId") Long id) {
         userService.deleteUser(id);
