@@ -1,6 +1,6 @@
 package com.auction_website.backend.controller;
 
-import com.auction_website.backend.request.LoginRequest;
+import com.auction_website.backend.dto.LoginRequest;
 import com.auction_website.backend.service.TokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,10 +1,9 @@
 package com.auction_website.backend.controller;
 
-import com.auction_website.backend.model.User;
+import com.auction_website.backend.dto.UserDTO;
+import com.auction_website.backend.exception.ResourceNotFoundException;
 import com.auction_website.backend.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,17 +16,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("{username}")
-    public ResponseEntity<?> getUser(@PathVariable("username") String username,
-                                     Authentication authentication) {
-        if (authentication.getName().equals(username)) {
-            return new ResponseEntity<>(userService.loadUserByUsername(username), HttpStatus.OK);
+    public UserDTO getUser(@PathVariable("username") String username,
+                                           Authentication authentication) {
+        if (!authentication.getName().equals(username)) {
+            throw new ResourceNotFoundException("Username " + username + " not found!");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return userService.getUser(username);
     }
 
     @PutMapping("{userId}")
-    public void updateUser(@PathVariable("userId") Long id, @RequestBody User user) {
-        userService.updateUser(id, user);
+    public void updateUser(@PathVariable("userId") Long id, @RequestBody UserDTO userDTO) {
+        userService.updateUser(id, userDTO);
     }
 
     @DeleteMapping("{userId}")

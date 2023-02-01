@@ -1,6 +1,6 @@
 package com.auction_website.backend.controller;
 
-import com.auction_website.backend.request.RegistrationRequest;
+import com.auction_website.backend.dto.RegistrationRequest;
 import com.auction_website.backend.service.RegistrationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
