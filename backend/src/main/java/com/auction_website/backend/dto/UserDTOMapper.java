@@ -20,6 +20,7 @@ public class UserDTOMapper implements Function<User, UserDTO> {
                 user.getPhoneNumber(),
                 user.getAddress(),
                 user.getTaxIdNumber(),
+                user.getEnabled(),
                 user.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)

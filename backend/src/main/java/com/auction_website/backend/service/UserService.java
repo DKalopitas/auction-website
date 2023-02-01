@@ -92,6 +92,11 @@ public class UserService implements UserDetailsService {
             changes = true;
         }
 
+        if (userDTO.enabled() != null && !userDTO.enabled().equals(user.getEnabled())) {
+            user.setEnabled(!user.getEnabled());
+            changes = true;
+        }
+
         if (userDTO.username() != null && !userDTO.username().equals(user.getUsername())) {
             if (userRepository.findByUsername(userDTO.username()).isPresent()) {
                 throw new IllegalStateException("Username already taken!");

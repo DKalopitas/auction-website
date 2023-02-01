@@ -10,6 +10,7 @@ public record UserDTO(
         String phoneNumber,
         String address,
         String taxIdNumber,
+        Boolean enabled,
         List<String> userRole,
         String username
 ) {
