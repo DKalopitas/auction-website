@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("api/v1/authentication")
 @AllArgsConstructor
-public class AuthController {
+public class AuthenticationController {
 
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/token")
+    @PostMapping()
     public String token(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
