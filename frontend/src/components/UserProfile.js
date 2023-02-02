@@ -9,10 +9,8 @@ import { z } from 'zod';
 
 const updateUserForm = z.object({
     id: z.number(),
-    userRole: z.string(),
     enabled: z.boolean(),
-    locked: z.boolean(),
-    password: z.string(),
+    userRole: z.string().array(),
     firstName: z.string()
         .min(1, { message: "First Name is required" })
         .min(3, { message: "First Name must contain at least 3 characters" })
@@ -43,7 +41,7 @@ const updateUserForm = z.object({
 
 const updatePasswordForm = z
     .object({
-        password: z.string()
+        newPassword: z.string()
             .min(1, { message: "Password is required" })
             .min(10, { message: "Password must contain at least 10 characters" })
             .max(24, { message: "Password must contain at most 24 characters" })
@@ -53,7 +51,7 @@ const updatePasswordForm = z
         confirmPassword: z.string()
             .min(1, { message: "Confirm Password is required" })
     })
-    .refine((data) => data.password === data.confirmPassword, { 
+    .refine((data) => data.newPassword === data.confirmPassword, { 
         message: "Passwords don't match",
         path: ["confirmPassword"]
     });
@@ -65,7 +63,7 @@ function UserProfile() {
     const navigate = useNavigate();
     const signOut = useSignOut();
     const [user, setUser] = useState({});
-    const [request, setRequest] = useState({});
+    const [request, setRequest] = useState(user);
     const labels = {
         firstName: "First Name",
         lastName: "Last Name",
@@ -74,7 +72,7 @@ function UserProfile() {
         address: "Address",
         taxIdNumber: "Tax ID",
         username: "Username",
-        enabled: "Account Enabled"
+        enabled: "Account Status"
     };
     const { register, 
         handleSubmit, 
@@ -102,7 +100,7 @@ function UserProfile() {
 
         const fetchData = async() => {
             try {
-                const response = await axiosPrivate.get(pathname, {})
+                const response = await axiosPrivate.get(pathname)
                 // console.log(response.data);
                 isMounted && setUser(response.data);
             } catch(error) {
@@ -119,35 +117,24 @@ function UserProfile() {
 
     useEffect(() => {
         setRequest(user);
-        setRequest(current => {
-            const {authorities, accountNonExpired, accountNonLocked, credentialsNonExpired, ...rest} = current;
-            return rest;
-        });
     }, [user])
 
     const handleEdit = (formValues) => {
         try {
             axiosPrivate.put(String(user.id), formValues);
+            navigate(0);
         } catch(error) {
             console.error(error);
         }
-        if (formValues.username !== user.username) {
-            signOut();
-            navigate("/log-in");
-            return;
-        }
-        navigate(0);
     }
 
     const handlePassword = (formValues) => {
-        console.log(formValues);
-        // try {
-        //     axiosPrivate.put(String(user.id), request);
-        // } catch(error) {
-        //     console.error(error);
-        // }
-        // signOut();
-        // navigate("/log-in");
+        try {
+            axiosPrivate.put(`${String(user.id)}/reset-password`, null, {params: {newPassword: formValues["newPassword"]}});
+            navigate(0);
+        } catch(error) {
+            console.error(error);
+        }
     }
 
     const handleDelete = () => {
@@ -203,11 +190,9 @@ function UserProfile() {
                                 <hr className="text-info mt-0 w-25 mx-auto"></hr>
                                 <div className="row">
                                     {
-                                        Object.keys(request).map(keyName => {
+                                        Object.keys(user).map(keyName => {
                                             if (keyName === "id"
-                                            || keyName === "password"
                                             || keyName === "userRole"
-                                            || keyName === "locked"
                                             ) {
                                                 return (null);
                                             }
@@ -217,7 +202,7 @@ function UserProfile() {
                                                         <p className="font-weight-bold">{labels[keyName]}</p>
                                                         <h6 className="text-muted">
                                                             {
-                                                                request[keyName] ? "Enabled"
+                                                                user[keyName] ? "Enabled"
                                                                 : "Disabled"
                                                             }
                                                         </h6>
@@ -227,7 +212,7 @@ function UserProfile() {
                                             return (
                                                 <div key={keyName} className="col-sm-6 my-3">
                                                     <p className="font-weight-bold">{labels[keyName]}</p>
-                                                    <h6 className="text-muted">{request[keyName]}</h6>
+                                                    <h6 className="text-muted">{user[keyName]}</h6>
                                                 </div>
                                             );
                                         })
@@ -268,12 +253,10 @@ function UserProfile() {
                     <form onSubmit={handleSubmit(handleEdit)}>
                         <div className="row text-center px-4">
                         {
-                            Object.keys(request).map(key => {
+                            Object.keys(user).map(key => {
                                 if (key === "id"
-                                || key === "password"
-                                || key === "userRole"
-                                || key === "locked"
                                 || key === "enabled"
+                                || key === "userRole"
                                 ) {
                                     setValue(key, user[key]);
                                     return (null);
@@ -303,7 +286,6 @@ function UserProfile() {
                             <button 
                             type="submit" 
                             className="btn btn-success px-3" 
-                            data-bs-dismiss="modal"
                             >
                                 Save All
                             </button>
@@ -336,9 +318,9 @@ function UserProfile() {
                                 <input 
                                 className="form-control" 
                                 type="text"
-                                { ...registerPwd("password") }
+                                { ...registerPwd("newPassword") }
                                 />
-                                <div className="text-danger mt-1">{errorsPwd["password"]?.message}</div>
+                                <div className="text-danger mt-1">{errorsPwd["newPassword"]?.message}</div>
                             </div>
                             <div className="col-sm-6 mb-4 pb-2 mx-auto">
                                 <p className="font-weight-bold mb-2 pb-1">Confirm Password</p>
@@ -361,7 +343,6 @@ function UserProfile() {
                                 <button 
                                 type="submit" 
                                 className="btn btn-success px-3" 
-                                data-bs-dismiss="modal"
                                 >
                                     Save
                                 </button>

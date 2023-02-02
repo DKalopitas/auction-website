@@ -31,6 +31,7 @@ public class UserController {
 
     @PutMapping("{userId}/reset-password")
     public void updatePassword(@PathVariable("userId") Long id, @RequestParam String newPassword) {
+        System.out.println(newPassword);
         userService.updatePassword(id, newPassword);
     }
 

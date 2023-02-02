@@ -5,7 +5,7 @@ import axios from '../api/axios';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 
-const LOGIN_URL = '/auth/token';
+const LOGIN_URL = '/authentication';
 
 const LogInComponent = () => {
     const usernameRef = useRef();
