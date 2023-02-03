@@ -63,7 +63,7 @@ function UserProfile() {
     const navigate = useNavigate();
     const signOut = useSignOut();
     const [user, setUser] = useState({});
-    const [request, setRequest] = useState(user);
+    const [request, setRequest] = useState({});
     const labels = {
         firstName: "First Name",
         lastName: "Last Name",

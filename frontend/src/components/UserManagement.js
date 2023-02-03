@@ -7,7 +7,18 @@ function UserManagement() {
     const { pathname } = useLocation();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        address: "",
+        taxIdNumber: "",
+        username: "",
+        enabled: "",
+        userRole: []
+    });
     const labels = {
         firstName: "First Name",
         lastName: "Last Name",
@@ -50,9 +61,9 @@ function UserManagement() {
         }
     }
 
-    const handleDelete = () => {
+    const handleDelete = async() => {
         try {
-            axiosPrivate.delete(`users/${user.id}`, {})
+            await axiosPrivate.delete(`users/${user.id}`, {})
             navigate("/users")
         } catch(error) {
             console.error(error);
@@ -70,7 +81,7 @@ function UserManagement() {
                                 <h2 className="font-weight-bold mt-3">{user?.username}</h2>
                                 {
                                     (() => {
-                                        if (user?.userRole[0] === "ADMIN") {
+                                        if (user.userRole[0] === "ADMIN") {
                                             return (null);
                                         }
                                         return (
