@@ -1,210 +1,139 @@
 import React from 'react';
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from '../api/axios';
-import FormInput from './FormInput';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod';
 
 const REGISTER_URL = '/registration';
+const userForm = z.object({
+    firstName: z.string()
+        .min(1, { message: "First Name is required" })
+        .min(3, { message: "First Name must contain at least 3 characters" })
+        .max(16, { message: "First Name must contain at most 16 characters" }),
+    lastName: z.string()
+        .min(1, { message: "Last Name is required" })
+        .min(3, { message: "Last Name must contain at least 3 characters" })
+        .max(16, { message: "Last Name must contain at most 16 characters" }),
+    email: z.string().email()
+        .min(1, { message: "Email is required" }),
+    phoneNumber: z.string()
+        .min(1, { message: "Phone Number is required" })
+        .regex(/^[0-9]*$/, { message: "Phone Number must only contain digits" })
+        .length(10, { message: "Phone Number must contain 10 digits" }),
+    address: z.string()
+        .min(1, { message: "Address is required" })
+        .regex(/[A-Za-z]{3,16}\s?[A-Za-z]{0,16},?\s?[0-9]{1,3}/, { message: "Invalid Address" }),
+    taxIdNumber: z.string()
+        .min(1, { message: "Tax ID is required" })
+        .regex(/^[0-9]*$/, { message: "Tax ID must only contain digits" })
+        .length(9, { message: "Tax ID must contain 9 digits" }),
+    username: z.string()
+        .min(1, { message: "Username is required" })
+        .min(3, { message: "Username must contain at least 3 characters" })
+        .max(16, { message: "Username must contain at most 16 characters" })
+        .regex(/^([A-Za-z0-9]_?)*$/, { message: "Invalid Username" }),
+    password: z.string()
+    .min(1, { message: "Password is required" })
+    .min(10, { message: "Password must contain at least 10 characters" })
+    .max(24, { message: "Password must contain at most 24 characters" })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%&*?])[A-Za-z\d!@#$%&*?]*$/, {
+    message: "Password must contain at least 1 lower case, 1 upper case, 1 number & 1 special character" 
+    })
+});
 
 function SignUpComponent() {
 
     const navigate = useNavigate();
-    const errorRef = useRef();
-    const [errorMessage, setErrorMessage] = useState('');
-    const [validated, setValidated] = useState(false);
-
-    const [values, setValues] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        address: "",
-        taxIdNumber: "",
-        username: "",
-        password: "",
-        confirmPassword: "",
-      });
+    const [errorMessage, setErrorMessage] = useState("");
+    const labels = {
+        firstName: "First Name",
+        lastName: "Last Name",
+        email: "Email",
+        phoneNumber: "Phone Number",
+        address: "Str. Address",
+        taxIdNumber: "Tax ID",
+        username: "Username",
+        password: "Password"
+    };
+    const { register, 
+        handleSubmit, 
+        formState: { errors } 
+    } = useForm({ 
+        resolver: zodResolver(userForm), 
+        mode: "onTouched", 
+    });
     
-    const inputs = [
-        {
-            id: 1,
-            name: "firstName",
-            type: "text",
-            placeholder: "First Name",
-            errorMessage:
-                "First name should be 3-16 characters and shouldn't include any special character",
-            label: "First Name",
-            pattern: "^[A-Za-z]{3,16}$",
-            required: true,
-        },
-        {
-            id: 2,
-            name: "lastName",
-            type: "text",
-            placeholder: "Last Name",
-            errorMessage:
-                "Last name should be 3-16 characters and shouldn't include any special character",
-            label: "Last Name",
-            pattern: "^[A-Za-z]{3,16}$",
-            required: true,
-        },
-        {
-            id: 3,
-            name: "email",
-            type: "email",
-            placeholder: "Email",
-            errorMessage: "It should be a valid email address",
-            label: "Email",
-            pattern: "^(.+)@(.+)$",
-            required: true,
-        },
-        {
-            id: 4,
-            name: "phoneNumber",
-            type: "tel",
-            placeholder: "Phone Number",
-            errorMessage:
-                "Phone number should be 10 digits",
-            label: "Phone Number",
-            pattern: "^[0-9]{10}$",
-            required: true,
-        },
-        {
-            id: 5,
-            name: "address",
-            type: "text",
-            placeholder: "Str. Address",
-            errorMessage:
-                "It should be a valid street address",
-            label: "Str. Address",
-            pattern: "^[A-Za-z,\\s+0-9]{3,16}$",
-            required: true,
-        },
-        {
-            id: 6,
-            name: "taxIdNumber",
-            type: "text",
-            placeholder: "Tax ID",
-            errorMessage:
-                "Tax ID should be 9 digits",
-            label: "Tax ID",
-            pattern: "^[0-9]{9}$",
-            required: true,
-        },
-        {
-            id: 7,
-            name: "username",
-            type: "text",
-            placeholder: "Username",
-            errorMessage:
-                "Username should be 3-16 characters and shouldn't include any special character",
-            label: "Username",
-            pattern: "^[A-Za-z0-9-_]{3,16}$",
-            required: true,
-        },
-        {
-            id: 8,
-            name: "password",
-            type: "password",
-            placeholder: "Password",
-            errorMessage:
-                "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character",
-            label: "Password",
-            pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-            required: true,
-        },
-        {
-            id: 9,
-            name: "confirmPassword",
-            type: "password",
-            placeholder: "Confirm Password",
-            errorMessage: "Passwords don't match",
-            label: "Confirm Password",
-            pattern: values.password,
-            required: true,
-        },
-    ];
-
-    useEffect(() => {
-        setErrorMessage('');
-    }, [values])
-    
-    const handleSubmit = async (e) => {
-        const form = e.currentTarget;
-        e.preventDefault();
-        setValidated(true);
-
-        if (form.checkValidity() === true) {
-            try {
-                const response = await axios.post(REGISTER_URL,
-                    JSON.stringify(values),
-                    {
-                        headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true
-                    }
-                );
-                // console.log(response.status);
-                navigate("/sign-up-success");
-            } catch (err) {
-                // console.log(err?.response?.status);
-                if (!err?.response) {
-                    setErrorMessage('No Server Response');
-                } else if (err.response?.status === 409) {
-                    setErrorMessage('Username Taken');
-                } else {
-                    setErrorMessage('Registration Failed')
+    const handleSubmitRequest = async(formValues) => {
+        try {
+            await axios.post(REGISTER_URL, formValues,
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
                 }
-                errorRef.current.focus();
+            );
+            navigate("/sign-up-success");
+        } catch (err) {
+            // console.log(err?.response?.status);
+            if (!err?.response) {
+                setErrorMessage('No Server Response!');
+            } else if (err.response?.status === 409) {
+                setErrorMessage('Username is already taken!');
+            } else {
+                setErrorMessage('Registration Failed!')
             }
+            
         }
     };
     
-    const handleChange = (e) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-    };
-    
     return (
-        <section className="vh-100">
+        <section className="mt-4">
             <div className="mask d-flex align-items-center h-100 gradient-custom-3">
                 <div className="container h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                     <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
+                    <div className="card bg-dark text-white rounded-4">
                         <div className="card-body p-5">
-                        <h2 className="text-uppercase text-center mb-5">Create an account</h2>
-
-                        <Form className="row g-3 needs-validation" onSubmit={handleSubmit} noValidate validated={validated}>
-                            {inputs.map((input) => (
-                                <FormInput
-                                key={input.id}
-                                {...input}
-                                value={values[input.name]}
-                                onChange={handleChange}
-                                />
-                            ))}
-
-                            <div className="d-flex justify-content-center">
-                            <Button type="submit"
-                                className="btn btn-outline-light btn-lg px-5 mt-4">Sign Up</Button>
-                            </div>
-
-                            <div ref={errorRef} 
-                            className={errorMessage ? "errorMessage text-center" : "offscreen"}
-                            aria-live="assertive"
-                            style={{color: "red", marginTop: "2rem"}}
-                            >
-                                {errorMessage}
-                            </div>
-
-                            <p className="text-center text-muted mt-5 mb-0">Already have an account? 
+                        <h2 className="text-uppercase text-center mb-5">Create account</h2>
+                            <form onSubmit={handleSubmit(handleSubmitRequest)}>
+                                <div className="row text-center">
+                                    {
+                                        Object.keys(labels).map(key => {
+                                            return (
+                                                <div key={key} className="col-sm-6 mb-4 pb-2">
+                                                    <p className="font-weight-bold mb-1">{labels[key]}</p>
+                                                    <input 
+                                                    className="form-control py-2"
+                                                    type={ (key === "password") ? "password" : "text" }
+                                                    onClick={()=>{if(key === "username"){setErrorMessage("")}}}
+                                                    { ...register(key) }
+                                                    />
+                                                    <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                                <div
+                                className={`text-danger text-center mt-3 ${(errorMessage === "") ? "offscreen" : ""}`}
+                                >
+                                    {errorMessage}
+                                </div>
+                                <div className="text-center">
+                                    <button
+                                    className="btn btn-outline-light btn-lg px-5 mt-5"
+                                    type="submit"
+                                    >
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </form>
+                            <p className="text-muted text-center mt-5 mb-0">Already have an account? 
                                 <Link to="/log-in" className="text-white-50 fw-bold ms-1">
                                     Login
                                 </Link>
                             </p>
-                        </Form>
-
                         </div>
                     </div>
                     </div>
