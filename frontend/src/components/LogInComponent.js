@@ -64,33 +64,30 @@ const LogInComponent = () => {
     }
 
     return (
-        <section className="gradient-custom">
+        <section className="mt-5">
             <div className="container py-5 h-100">
                 <div className="row d-flex justify-content-center align-items-center h-100">
                 <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <div className="card bg-dark text-white" style={{borderRadius: "1rem"}}>
-                    <div className="card-body p-5 text-center">
-
-                        <div className="mb-md-5 mt-md-4 pb-5">
+                    <div className="card bg-dark text-white rounded-4">
+                    <div className="card-body p-4 text-center">
 
                         <h2 className="fw-bold mb-5">Sign In</h2>
                         
-                        <form className="needs-validation" onSubmit={handleSubmit}>
-                            <div className="form-outline form-white mb-4">
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-outline form-white mx-4 mb-4 pb-2">
                                 <label className="form-label" htmlFor="username">Username</label>
-                                <input 
+                                <input
                                 type="text"
                                 id="username"
                                 ref={usernameRef}
-                                autoComplete="off"
                                 onChange={(e) => setUsername(e.target.value)}
                                 value={username}
-                                required 
+                                required
                                 className="form-control form-control-lg"
                                 />
                             </div>
 
-                            <div className="form-outline form-white mb-4">
+                            <div className="form-outline form-white mx-4 mb-4">
                                 <label className="form-label" htmlFor="typePasswordX">Password</label>
                                 <input 
                                 type="password" 
@@ -102,7 +99,7 @@ const LogInComponent = () => {
                                 />
                             </div>
 
-                            <p className="small mb-5 pb-lg-2">
+                            <p className="small">
                                 <a className="text-white-50" 
                                 href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
                                 target="_blank" rel="noopener noreferrer"
@@ -111,23 +108,19 @@ const LogInComponent = () => {
                                 </a>
                             </p>
 
-                            <button className="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                            <button className="btn btn-outline-light btn-lg px-5 mt-5" type="submit">Login</button>
                         </form>
 
                         <div ref={errorRef} 
-                        className={errorMsg ? "errmsg" : "offscreen"}
+                        className={`${errorMsg ? "errmsg" : "offscreen"} text-danger my-5`}
                         aria-live="assertive"
-                        style={{color: "red", marginTop: "2rem"}}
                         >
                             {errorMsg}
                         </div>
-                        </div>
 
-                        <div>
-                        <p className="mb-0">Don't have an account?
+                        <p className="mt-0">Don't have an account?
                             <Link to="/sign-up" className="text-white-50 fw-bold ms-1">Sign Up</Link>
                         </p>
-                        </div>
 
                     </div>
                     </div>
