@@ -74,7 +74,7 @@ const LogInComponent = () => {
                         <h2 className="fw-bold mb-5">Sign In</h2>
                         
                         <form onSubmit={handleSubmit}>
-                            <div className="form-outline form-white mx-4 mb-4 pb-2">
+                            <div className="form-outline form-white mx-5 mb-4 pb-2">
                                 <label className="form-label" htmlFor="username">Username</label>
                                 <input
                                 type="text"
@@ -87,7 +87,7 @@ const LogInComponent = () => {
                                 />
                             </div>
 
-                            <div className="form-outline form-white mx-4 mb-4">
+                            <div className="form-outline form-white mx-5 mb-4">
                                 <label className="form-label" htmlFor="typePasswordX">Password</label>
                                 <input 
                                 type="password" 
