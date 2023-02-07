@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
+import Form from 'react-bootstrap/Form';
+import { FloatingLabel } from 'react-bootstrap';
 
 const updateUserForm = z.object({
     id: z.number(),
@@ -263,11 +265,12 @@ function UserProfile() {
                                 }
                                 return (
                                     <div key={key} className="col-sm-6 mb-4 pb-2 mx-auto">
-                                        <p className="font-weight-bold mb-1">{labels[key]}</p>
-                                        <input 
-                                        className="form-control"
-                                        { ...register(key) }
-                                        />
+                                        <FloatingLabel className="text-black" label={labels[key]}>
+                                            <Form.Control 
+                                            placeholder="-"
+                                            { ...register(key) }
+                                            />
+                                        </FloatingLabel>
                                         <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
                                     </div>
                                 );
@@ -314,21 +317,23 @@ function UserProfile() {
                         <p className="mb-5">Changing your password will result in log out.</p>
                         <form onSubmit={handleSubmitPwd(handlePassword)}>
                             <div className="col-sm-6 mb-4 pb-2 mx-auto">
-                                <p className="font-weight-bold mb-2 pb-1">New Password</p>
-                                <input 
-                                className="form-control" 
-                                type="text"
-                                { ...registerPwd("newPassword") }
-                                />
+                                <FloatingLabel className="text-black" label="New Password">
+                                    <Form.Control 
+                                    type="text"
+                                    placeholder="-"
+                                    { ...registerPwd("newPassword") }
+                                    />
+                                </FloatingLabel>
                                 <div className="text-danger mt-1">{errorsPwd["newPassword"]?.message}</div>
                             </div>
                             <div className="col-sm-6 mb-4 pb-2 mx-auto">
-                                <p className="font-weight-bold mb-2 pb-1">Confirm Password</p>
-                                <input 
-                                className="form-control"
-                                type="text"
-                                { ...registerPwd("confirmPassword") }
-                                />
+                                <FloatingLabel className="text-black" label="Confirm Password">
+                                    <Form.Control
+                                    type="text"
+                                    placeholder="-"
+                                    { ...registerPwd("confirmPassword") }
+                                    />
+                                </FloatingLabel>
                                 <div className="text-danger mt-1">{errorsPwd["confirmPassword"]?.message}</div>
                             </div>
                             <div className="d-flex justify-content-between mt-5 pt-4 mb-4 mx-4">

@@ -5,6 +5,7 @@ import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
+import { FloatingLabel, Form } from 'react-bootstrap';
 
 const REGISTER_URL = '/registration';
 const userForm = z.object({
@@ -102,13 +103,14 @@ function SignUpComponent() {
                                         Object.keys(labels).map(key => {
                                             return (
                                                 <div key={key} className="col-sm-6 mb-4 pb-2">
-                                                    <p className="font-weight-bold mb-1">{labels[key]}</p>
-                                                    <input 
-                                                    className="form-control py-2"
-                                                    type={ (key === "password") ? "password" : "text" }
-                                                    onClick={()=>{if(key === "username"){setErrorMessage("")}}}
-                                                    { ...register(key) }
-                                                    />
+                                                    <FloatingLabel className="text-black" label={labels[key]}>
+                                                        <Form.Control 
+                                                        placeholder="-"
+                                                        type={ (key === "password") ? "password" : "text" }
+                                                        onClick={()=>{if(key === "username"){setErrorMessage("")}}}
+                                                        { ...register(key) }
+                                                        />
+                                                    </FloatingLabel>
                                                     <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
                                                 </div>
                                             );
