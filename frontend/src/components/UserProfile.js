@@ -155,7 +155,7 @@ function UserProfile() {
                 <div className="row d-flex justify-content-center">
                     <div className="col-md-9 mt-5 pt-5">
                         <div className="row z-depth-3 bg-dark">
-                            <div className="col-sm-4 rounded-start d-flex flex-column justify-content-between align-items-center text-white pt-5">
+                            <div className="col-sm-4 rounded-start d-flex flex-column justify-content-between align-items-center text-white mt-5 pt-5">
                                 <i className="fas fa-user fa-9x mt-5 text-secondary"></i>
                                 <h2 className="font-weight-bold mt-3">{user.username}</h2>
                                 <button
@@ -169,8 +169,15 @@ function UserProfile() {
                                 </button>
                                 {
                                     (() => {
-                                        if (user["userRole"] === "ADMIN") {
-                                            return (null);
+                                        if (user["userRole"]?.[0] === "ADMIN") {
+                                            return (
+                                                <React.Fragment>
+                                                    <div
+                                                    className="mt-auto py-3 mb-5"
+                                                    >
+                                                    </div>
+                                                </React.Fragment>
+                                            );
                                         } 
                                         return (
                                             <React.Fragment>
