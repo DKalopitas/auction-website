@@ -245,60 +245,60 @@ function UserProfile() {
             aria-labelledby="staticBackdropLabel" 
             aria-hidden="true"
             >
-            <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content bg-dark text-white rounded-3">
-                <div className="text-center m-2">
-                    <h1 className="modal-title fs-3" id="staticBackdropLabel">Edit</h1>
-                    <hr className="text-info mt-1 w-25 mx-auto"></hr>
-                </div>
-                <div className="modal-body">
-                    <form onSubmit={handleSubmit(handleEdit)}>
-                        <div className="row text-center px-4">
-                        {
-                            Object.keys(user).map(key => {
-                                if (key === "id"
-                                || key === "enabled"
-                                || key === "userRole"
-                                ) {
-                                    setValue(key, user[key]);
-                                    return (null);
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content bg-dark text-white rounded-3">
+                        <div className="text-center m-2">
+                            <h1 className="modal-title fs-3" id="staticBackdropLabel">Edit</h1>
+                            <hr className="text-info mt-1 w-25 mx-auto"></hr>
+                        </div>
+                        <div className="modal-body">
+                            <form onSubmit={handleSubmit(handleEdit)}>
+                                <div className="row text-center px-4">
+                                {
+                                    Object.keys(user).map(key => {
+                                        if (key === "id"
+                                        || key === "enabled"
+                                        || key === "userRole"
+                                        ) {
+                                            setValue(key, user[key]);
+                                            return (null);
+                                        }
+                                        return (
+                                            <div key={key} className="col-sm-6 mb-4 pb-2 mx-auto">
+                                                <FloatingLabel className="text-black" label={labels[key]}>
+                                                    <Form.Control 
+                                                    placeholder="-"
+                                                    { ...register(key) }
+                                                    />
+                                                </FloatingLabel>
+                                                <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
+                                            </div>
+                                        );
+                                    })
                                 }
-                                return (
-                                    <div key={key} className="col-sm-6 mb-4 pb-2 mx-auto">
-                                        <FloatingLabel className="text-black" label={labels[key]}>
-                                            <Form.Control 
-                                            placeholder="-"
-                                            { ...register(key) }
-                                            />
-                                        </FloatingLabel>
-                                        <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
-                                    </div>
-                                );
-                            })
-                        }
+                                </div>
+                                <div className="d-flex justify-content-between mt-5 mb-3 mx-3">
+                                    <button 
+                                    type="button" 
+                                    className="btn btn-secondary px-3" 
+                                    data-bs-dismiss="modal" 
+                                    onClick={ () => { reset() } }
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                    type="submit" 
+                                    className="btn btn-success px-3" 
+                                    >
+                                        Save All
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <div className="d-flex justify-content-between mt-5 mb-3 mx-3">
-                            <button 
-                            type="button" 
-                            className="btn btn-secondary px-3" 
-                            data-bs-dismiss="modal" 
-                            onClick={ () => { reset() } }
-                            >
-                                Cancel
-                            </button>
-                            <button 
-                            type="submit" 
-                            className="btn btn-success px-3" 
-                            >
-                                Save All
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
                 </div>
             </div>
 
-            </div>
             <div className="modal fade" 
             id="passwordModal" 
             data-bs-backdrop="static"
@@ -308,15 +308,14 @@ function UserProfile() {
             aria-hidden="true"
             >
                 <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content bg-dark text-white rounded-3">
-                    <div className="text-center m-2">
+                <div className="modal-content bg-dark text-white rounded-3 p-3">
+                    <div className="text-center mb-3">
                         <h1 className="modal-title fs-3" id="staticBackdropLabel">Reset Password</h1>
                         <hr className="text-info mt-1 w-25 mx-auto"></hr>
                     </div>
                     <div className="modal-body text-center">
-                        <p className="mb-5">Changing your password will result in log out.</p>
                         <form onSubmit={handleSubmitPwd(handlePassword)}>
-                            <div className="col-sm-6 mb-4 pb-2 mx-auto">
+                            <div className="col-sm-7 mb-4 pb-2 mx-auto">
                                 <FloatingLabel className="text-black" label="New Password">
                                     <Form.Control 
                                     type="text"
@@ -326,7 +325,7 @@ function UserProfile() {
                                 </FloatingLabel>
                                 <div className="text-danger mt-1">{errorsPwd["newPassword"]?.message}</div>
                             </div>
-                            <div className="col-sm-6 mb-4 pb-2 mx-auto">
+                            <div className="col-sm-7 mx-auto">
                                 <FloatingLabel className="text-black" label="Confirm Password">
                                     <Form.Control
                                     type="text"
@@ -336,7 +335,7 @@ function UserProfile() {
                                 </FloatingLabel>
                                 <div className="text-danger mt-1">{errorsPwd["confirmPassword"]?.message}</div>
                             </div>
-                            <div className="d-flex justify-content-between mt-5 pt-4 mb-4 mx-4">
+                            <div className="d-flex justify-content-between mt-5 pt-3">
                                 <button 
                                 type="button" 
                                 className="btn btn-secondary px-3" 
@@ -347,7 +346,7 @@ function UserProfile() {
                                 </button>
                                 <button 
                                 type="submit" 
-                                className="btn btn-success px-3" 
+                                className="btn btn-success px-4"
                                 >
                                     Save
                                 </button>

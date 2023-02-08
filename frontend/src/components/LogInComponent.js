@@ -13,6 +13,7 @@ const LogInComponent = () => {
     const signIn = useSignIn();
     const navigate = useNavigate();
 
+    const [pwdType, setPwdType] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
@@ -74,29 +75,42 @@ const LogInComponent = () => {
                         <h2 className="fw-bold mb-5">Sign In</h2>
                         
                         <form onSubmit={handleSubmit}>
-                            <div className="form-outline form-white mx-5 mb-4 pb-2">
+                            <div className="mx-5 mb-4 pb-2">
                                 <label className="form-label" htmlFor="username">Username</label>
                                 <input
+                                className="form-control form-control-lg"
                                 type="text"
                                 id="username"
                                 ref={usernameRef}
-                                onChange={(e) => setUsername(e.target.value)}
                                 value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
-                                className="form-control form-control-lg"
                                 />
                             </div>
 
-                            <div className="form-outline form-white mx-5 mb-4">
-                                <label className="form-label" htmlFor="typePasswordX">Password</label>
-                                <input 
-                                type="password" 
-                                id="typePasswordX"
-                                onChange={(e) => setPassword(e.target.value)}
-                                value={password}
-                                required
+                            <label className="form-label" htmlFor="typePasswordX">Password</label>
+                            <div className="mx-5 mb-4 d-flex">
+                                <input
                                 className="form-control form-control-lg"
+                                type={pwdType ? "text" : "password"}
+                                id="typePasswordX"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
                                 />
+                                <button 
+                                className="bg-transparent border-0 p-0 d-flex flex-column justify-content-center"
+                                type="button"
+                                onClick={()=>{setPwdType(!pwdType)}}
+                                style={pwdType ? {marginLeft: "-36px"} : {marginLeft: "-35px"}}
+                                >
+                                    {(() => {
+                                        if (pwdType) {
+                                            return <i className="fa fa-solid fa-eye-slash fs-5"></i>
+                                        }
+                                        return <i className="fa fa-solid fa-eye fs-5"></i>
+                                    })()}
+                                </button>
                             </div>
 
                             <p className="small">
