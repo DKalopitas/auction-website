@@ -5,7 +5,7 @@ import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
-import { FloatingLabel, Form } from 'react-bootstrap';
+import { FloatingLabel, Form, Modal } from 'react-bootstrap';
 import ErrorPopup from './ErrorPopup';
 
 const REGISTER_URL = '/registration';
@@ -50,6 +50,7 @@ function SignUpComponent() {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [show, setShow] = useState(false);
     const labels = {
         firstName: "First Name",
         lastName: "Last Name",
@@ -77,7 +78,8 @@ function SignUpComponent() {
                     withCredentials: true
                 }
             );
-            navigate("/sign-up-success");
+            // navigate("/sign-up-success");
+            setShow(true);
         } catch (err) {
             // console.log(err?.response?.status);
             if (!err?.response) {
@@ -150,6 +152,32 @@ function SignUpComponent() {
             {
                 errorMessage ? <ErrorPopup errorMessage={errorMessage} /> : null
             }
+
+            <Modal
+            show={show}
+            backdrop="static"
+            keyboard={false}
+            centered
+            // style={{background: "#212529"}}
+            >
+                <Modal.Body className="bg-dark text-white text-center rounded-3">
+                <div className="mt-md-4 pb-2">
+                    <h2 className="fw-bold mb-5">Success</h2>
+                    <div className="fs-5 mb-5">
+                        <div className="mb-3">Your request has been submitted.</div>
+                        <div>We will check your details and enable your account 
+                            as soon as possible!</div>
+                    </div>
+                    <Link 
+                    to="/" 
+                    className="text-white fw-bold fs-5" 
+                    onClick={ () => setShow(false) }
+                    >
+                        Go to Homepage
+                    </Link>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </section>
     );
 }
