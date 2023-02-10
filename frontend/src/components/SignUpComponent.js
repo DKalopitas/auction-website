@@ -122,22 +122,22 @@ function SignUpComponent() {
                                             }
                                         </div>
                                         <div className="text-center">
-                                            <button
-                                            className="btn btn-outline-light btn-lg px-5 mt-3"
-                                            type="submit"
-                                            onClick={ () => setErrorMessage("") }
-                                            >
-                                                Sign Up
-                                            </button>
+                                            { 
+                                                loading ?
+                                                    <div className="spinner-border mt-3" role="status">
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </div>
+                                                : 
+                                                    <button
+                                                    className="btn btn-outline-light btn-lg px-5 mt-3"
+                                                    type="submit"
+                                                    onClick={ () => setErrorMessage("") }
+                                                    >
+                                                        Sign Up
+                                                    </button>
+                                            }
                                         </div>
                                     </form>
-                                    { 
-                                        loading ?
-                                            <div className="spinner-border mt-5" role="status">
-                                                <span className="visually-hidden">Loading...</span>
-                                            </div>
-                                        : null
-                                    }
                                     <p className="text-muted mt-5 mb-0">Already have an account? 
                                         <Link to="/log-in" className="text-white-50 fw-bold ms-1">
                                             Login

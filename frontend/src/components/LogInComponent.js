@@ -120,22 +120,21 @@ const LogInComponent = () => {
                                         </a>
                                     </p>
 
-                                    <button 
-                                    className="btn btn-outline-light btn-lg px-5 mt-5" 
-                                    type="submit"
-                                    onClick={ () => setErrorMsg("") }
-                                    >
-                                        Login
-                                    </button>
+                                    { 
+                                        loading ?
+                                            <div className="spinner-border mt-5" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        :
+                                            <button 
+                                            className="btn btn-outline-light btn-lg px-5 mt-5" 
+                                            type="submit"
+                                            onClick={ () => setErrorMsg("") }
+                                            >
+                                                Login
+                                            </button>
+                                    }
                                 </form>
-
-                                { 
-                                    loading ?
-                                        <div className="spinner-border mt-5" role="status">
-                                            <span className="visually-hidden">Loading...</span>
-                                        </div>
-                                    : null
-                                }
 
                                 <p className="mt-5">Don't have an account?
                                     <Link to="/sign-up" className="text-white-50 fw-bold ms-1">Sign Up</Link>
