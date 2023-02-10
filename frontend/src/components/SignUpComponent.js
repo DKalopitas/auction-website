@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod';
 import { FloatingLabel, Form } from 'react-bootstrap';
+import ErrorPopup from './ErrorPopup';
 
 const REGISTER_URL = '/registration';
 const userForm = z.object({
@@ -48,6 +49,7 @@ function SignUpComponent() {
 
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const labels = {
         firstName: "First Name",
         lastName: "Last Name",
@@ -68,6 +70,7 @@ function SignUpComponent() {
     
     const handleSubmitRequest = async(formValues) => {
         try {
+            setLoading(true);
             await axios.post(REGISTER_URL, formValues,
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -78,70 +81,75 @@ function SignUpComponent() {
         } catch (err) {
             // console.log(err?.response?.status);
             if (!err?.response) {
-                setErrorMessage('No Server Response!');
+                setErrorMessage('No Server Response');
             } else if (err.response?.status === 409) {
-                setErrorMessage('Username is already taken!');
+                setErrorMessage('Username is already taken');
             } else {
-                setErrorMessage('Registration Failed!')
+                setErrorMessage('Registration Failed')
             }
-            
         }
+        setLoading(false);
     };
     
     return (
         <section className="mt-4">
             <div className="mask d-flex align-items-center h-100 gradient-custom-3">
                 <div className="container h-100">
-                <div className="row d-flex justify-content-center align-items-center h-100">
-                    <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-                    <div className="card bg-dark text-white rounded-4">
-                        <div className="card-body p-5">
-                        <h2 className="text-uppercase text-center mb-5">Create account</h2>
-                            <form onSubmit={handleSubmit(handleSubmitRequest)}>
-                                <div className="row text-center">
-                                    {
-                                        Object.keys(labels).map(key => {
-                                            return (
-                                                <div key={key} className="col-sm-6 mb-4 pb-2">
-                                                    <FloatingLabel className="text-black" label={labels[key]}>
-                                                        <Form.Control 
-                                                        placeholder="-"
-                                                        type={ (key === "password") ? "password" : "text" }
-                                                        onClick={()=>{if(key === "username"){setErrorMessage("")}}}
-                                                        { ...register(key) }
-                                                        />
-                                                    </FloatingLabel>
-                                                    <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
-                                                </div>
-                                            );
-                                        })
+                    <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col-12 col-md-9 col-lg-7 col-xl-6">
+                            <div className="card bg-dark text-white rounded-4">
+                                <div className="card-body text-center p-5">
+                                    <h2 className="text-uppercase mb-5">Create account</h2>
+                                    <form onSubmit={handleSubmit(handleSubmitRequest)}>
+                                        <div className="row text-center">
+                                            {
+                                                Object.keys(labels).map(key => {
+                                                    return (
+                                                        <div key={key} className="col-sm-6 mb-4 pb-2">
+                                                            <FloatingLabel className="text-black" label={labels[key]}>
+                                                                <Form.Control 
+                                                                placeholder="-"
+                                                                type={ (key === "password") ? "password" : "text" }
+                                                                { ...register(key) }
+                                                                />
+                                                            </FloatingLabel>
+                                                            <div className="text-danger mt-1 mx-1">{errors[key]?.message}</div>
+                                                        </div>
+                                                    );
+                                                })
+                                            }
+                                        </div>
+                                        <div className="text-center">
+                                            <button
+                                            className="btn btn-outline-light btn-lg px-5 mt-3"
+                                            type="submit"
+                                            onClick={ () => setErrorMessage("") }
+                                            >
+                                                Sign Up
+                                            </button>
+                                        </div>
+                                    </form>
+                                    { 
+                                        loading ?
+                                            <div className="spinner-border mt-5" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                        : null
                                     }
+                                    <p className="text-muted mt-5 mb-0">Already have an account? 
+                                        <Link to="/log-in" className="text-white-50 fw-bold ms-1">
+                                            Login
+                                        </Link>
+                                    </p>
                                 </div>
-                                <div
-                                className={`text-danger text-center mt-3 ${(errorMessage === "") ? "offscreen" : ""}`}
-                                >
-                                    {errorMessage}
-                                </div>
-                                <div className="text-center">
-                                    <button
-                                    className="btn btn-outline-light btn-lg px-5 mt-5"
-                                    type="submit"
-                                    >
-                                        Sign Up
-                                    </button>
-                                </div>
-                            </form>
-                            <p className="text-muted text-center mt-5 mb-0">Already have an account? 
-                                <Link to="/log-in" className="text-white-50 fw-bold ms-1">
-                                    Login
-                                </Link>
-                            </p>
+                            </div>
                         </div>
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
+            {
+                errorMessage ? <ErrorPopup errorMessage={errorMessage} /> : null
+            }
         </section>
     );
 }
