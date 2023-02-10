@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from '../api/axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -47,7 +47,7 @@ const userForm = z.object({
 
 function SignUpComponent() {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
