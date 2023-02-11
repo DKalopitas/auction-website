@@ -7,6 +7,7 @@ function UserManagement() {
     const { pathname } = useLocation();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
     const [user, setUser] = useState({
         id: "",
         firstName: "",
@@ -52,13 +53,20 @@ function UserManagement() {
         }
     }, [axiosPrivate, pathname]);
 
-    const handleActivation = async() => {
-        try {
-            await axiosPrivate.put(`users/${user.id}`, {...user, enabled: !user.enabled})
-            setUser({...user, enabled: !user.enabled});
-        } catch(error) {
-            console.error(error);
+    const handleActivation = () => {
+
+        const enableUser = async() => {
+            setLoading(true);
+            try {
+                await axiosPrivate.put(`users/${user.id}`, {...user, enabled: !user.enabled})
+                setUser({...user, enabled: !user.enabled});
+            } catch(error) {
+                console.error(error);
+            }
+            setLoading(false);
         }
+        enableUser();
+        
     }
 
     const handleDelete = async() => {
@@ -86,17 +94,24 @@ function UserManagement() {
                                         }
                                         return (
                                             <React.Fragment>
-                                                <button 
-                                                type="button"
-                                                className="btn btn-dark p-2 mt-4 mx-auto"
-                                                title={ user.enabled ? "Disable Account" : "Enable Account" }
-                                                onClick={handleActivation}
-                                                >
-                                                    { 
-                                                        user.enabled ? <i className="fa-solid fa-xmark fa-2x text-danger"></i>
-                                                        : <i className="fa-solid fa-check fa-2x text-success"></i>
-                                                    }
-                                                </button>
+                                                { 
+                                                    loading ?
+                                                        <div className="spinner-border mt-5 mx-auto" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </div>
+                                                    :
+                                                        <button 
+                                                        type="button"
+                                                        className="btn btn-dark p-2 mt-4 mx-auto"
+                                                        title={ user.enabled ? "Disable Account" : "Enable Account" }
+                                                        onClick={handleActivation}
+                                                        >
+                                                            { 
+                                                                user.enabled ? <i className="fa-solid fa-xmark fa-2x text-danger"></i>
+                                                                : <i className="fa-solid fa-check fa-2x text-success"></i>
+                                                            }
+                                                        </button>
+                                                }
                                             </React.Fragment>
                                         );
                                     })()
