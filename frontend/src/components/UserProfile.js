@@ -160,7 +160,7 @@ function UserProfile() {
                                 <h2 className="font-weight-bold mt-3">{user.username}</h2>
                                 <button
                                 type="button"
-                                className="btn btn-dark mt-4"
+                                className="btn btn-dark mt-4 mb-auto"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editModal"
                                 title="Edit"
@@ -170,20 +170,13 @@ function UserProfile() {
                                 {
                                     (() => {
                                         if (user["userRole"]?.[0] === "ADMIN") {
-                                            return (
-                                                <React.Fragment>
-                                                    <div
-                                                    className="mt-auto py-3 mb-5"
-                                                    >
-                                                    </div>
-                                                </React.Fragment>
-                                            );
-                                        } 
+                                            return (null);
+                                        }
                                         return (
                                             <React.Fragment>
                                                 <button
                                                 type="button"
-                                                className="btn btn-dark mt-auto mb-5"
+                                                className="btn btn-dark mb-5"
                                                 title="Delete Account"
                                                 onClick={handleDelete}
                                                 >
