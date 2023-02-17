@@ -33,16 +33,23 @@ public class User implements UserDetails {
     private UserRole userRole;
     private Boolean locked = false;
     private Boolean enabled = true;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+    private Seller seller = new Seller();
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bidder_id", referencedColumnName = "id")
+    private Bidder bidder = new Bidder();
 
-    public User(String username,
-                String password,
-                String firstName,
-                String lastName,
-                String email,
-                String phoneNumber,
-                String address,
-                String taxIdNumber,
-                UserRole userRole
+    public User(
+            String username,
+            String password,
+            String firstName,
+            String lastName,
+            String email,
+            String phoneNumber,
+            String address,
+            String taxIdNumber,
+            UserRole userRole
     ) {
         this.username = username;
         this.password = password;
@@ -51,6 +58,8 @@ public class User implements UserDetails {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        bidder.setCountry(address);
+        bidder.setLocation(address);
         this.taxIdNumber = taxIdNumber;
         this.userRole = userRole;
     }
