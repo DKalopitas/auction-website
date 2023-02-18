@@ -11,7 +11,8 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Nonnull
+    @OneToOne(mappedBy = "seller")
+    private User user;
     private float rating;
 
 }

@@ -25,10 +25,12 @@ public class Item {
     private List<String> categories;
     @Column(name = "buy_price")
     private BigDecimal buyPrice;
-    @Column(name = "first_bid")
-    private BigDecimal firstBid;
     @Column(name = "current_price")
     private BigDecimal currentPrice;
+    @Column(name = "first_bid")
+    private BigDecimal firstBid;
+    @OneToMany(mappedBy = "item")
+    private List<Bid> bids;
     private String location;
     private Double latitude;
     private Double longitude;

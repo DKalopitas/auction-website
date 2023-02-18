@@ -12,6 +12,8 @@ public class Bidder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne(mappedBy = "bidder")
+    private User user;
     @Nonnull
     private float rating;
     @Nonnull
