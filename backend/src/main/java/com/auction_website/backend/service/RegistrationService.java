@@ -6,19 +6,10 @@ import com.auction_website.backend.dto.RegistrationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -26,8 +17,6 @@ public class RegistrationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final BidRepository bidRepository;
-    private final ItemRepository itemRepository;
 
     public ResponseEntity<?> register(RegistrationRequest request) {
         boolean userExists = userRepository
