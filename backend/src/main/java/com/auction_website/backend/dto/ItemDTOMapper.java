@@ -28,9 +28,9 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
                         .map(bidDTOMapper)
                         .collect(Collectors.toList()),
                 item.getLocation(),
+                item.getCountry(),
                 item.getLatitude(),
                 item.getLongitude(),
-                item.getCountry(),
                 item.getStarted(),
                 item.getEnds(),
                 item.getSeller().getRating(),
