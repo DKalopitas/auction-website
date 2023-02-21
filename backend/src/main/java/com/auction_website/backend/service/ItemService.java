@@ -6,7 +6,6 @@ import com.auction_website.backend.exception.ResourceNotFoundException;
 import com.auction_website.backend.model.Item;
 import com.auction_website.backend.model.User;
 import com.auction_website.backend.repository.ItemRepository;
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
