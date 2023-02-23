@@ -48,11 +48,6 @@ public class BidService {
     ) {
         if (bidDTO.bidder() != null
                 || bidDTO.bidderRating() != null
-                || bidDTO.item() != null
-                || bidDTO.location() == null
-                || bidDTO.location().isBlank()
-                || bidDTO.country() == null
-                || bidDTO.country().isBlank()
                 || bidDTO.time() == null
                 || bidDTO.amount() == null
                 || itemId == null

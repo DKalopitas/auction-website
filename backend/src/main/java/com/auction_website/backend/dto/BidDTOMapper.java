@@ -12,9 +12,6 @@ public class BidDTOMapper implements Function<Bid, BidDTO> {
         return new BidDTO(
                 bid.getId(),
                 bid.getBidder(),
-                bid.getItem(),
-                bid.getBidder().getLocation(),
-                bid.getBidder().getCountry(),
                 bid.getTime(),
                 bid.getAmount(),
                 bid.getBidder().getRating()
