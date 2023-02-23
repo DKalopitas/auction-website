@@ -14,18 +14,21 @@ public class UserDTOMapper implements Function<User, UserDTO> {
     public UserDTO apply(User user) {
         return new UserDTO(
                 user.getId(),
+                user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
                 user.getPhoneNumber(),
                 user.getAddress(),
                 user.getTaxIdNumber(),
+                user.getSeller().getRating(),
+                user.getBidder().getRating(),
                 user.getEnabled(),
                 user.getAuthorities()
                         .stream()
                         .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()),
-                user.getUsername()
+                        .collect(Collectors.toList())
+
         );
     }
 

@@ -20,7 +20,6 @@ public record ItemDTO(
         Timestamp started,
         Timestamp ends,
         float sellerRating,
-        Long userId,
         String description
 ) {
 }

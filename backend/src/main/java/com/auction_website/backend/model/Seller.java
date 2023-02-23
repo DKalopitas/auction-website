@@ -1,6 +1,5 @@
 package com.auction_website.backend.model;
 
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,6 @@ public class Seller {
     private Long id;
     @OneToOne(mappedBy = "seller")
     private User user;
-    private float rating;
+    private Float rating;
 
 }

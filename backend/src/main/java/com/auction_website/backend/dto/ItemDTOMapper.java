@@ -34,7 +34,6 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
                 item.getStarted(),
                 item.getEnds(),
                 item.getSeller().getRating(),
-                item.getSeller().getUser().getId(),
                 item.getDescription()
         );
     }
