@@ -46,10 +46,7 @@ public class BidController {
 
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @GetMapping("users/{username}/bids")
-    public List<BidDTO> getAllUserBids(
-            @PathVariable String username,
-            Authentication authentication
-    ) {
+    public List<BidDTO> getAllUserBids(@PathVariable String username) {
         User user = userService.loadUserByUsername(username);
         return bidService.getAllBids(user.getBidder());
     }
