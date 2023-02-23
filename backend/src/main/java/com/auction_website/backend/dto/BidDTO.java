@@ -1,14 +1,19 @@
 package com.auction_website.backend.dto;
 
+import com.auction_website.backend.model.Bidder;
+import com.auction_website.backend.model.Item;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public record BidDTO(
-        float bidderRating,
-        Long userId,
+        Long id,
+        Bidder bidder,
+        Item item,
         String location,
         String country,
         Timestamp time,
-        BigDecimal amount
+        BigDecimal amount,
+        Float bidderRating
 ) {
 }

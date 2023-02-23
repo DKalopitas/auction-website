@@ -22,9 +22,9 @@ public class Bid {
     private Timestamp time;
     private BigDecimal amount;
 
-    public Bid(Item item, Bidder bidder, Timestamp time, BigDecimal amount) {
-        this.item = item;
+    public Bid(Bidder bidder, Item item, Timestamp time, BigDecimal amount) {
         this.bidder = bidder;
+        this.item = item;
         this.time = time;
         this.amount = amount;
     }

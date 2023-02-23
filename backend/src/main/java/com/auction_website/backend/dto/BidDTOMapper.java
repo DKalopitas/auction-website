@@ -10,12 +10,14 @@ public class BidDTOMapper implements Function<Bid, BidDTO> {
     @Override
     public BidDTO apply(Bid bid) {
         return new BidDTO(
-                bid.getBidder().getRating(),
-                bid.getBidder().getUser().getId(),
+                bid.getId(),
+                bid.getBidder(),
+                bid.getItem(),
                 bid.getBidder().getLocation(),
                 bid.getBidder().getCountry(),
                 bid.getTime(),
-                bid.getAmount()
+                bid.getAmount(),
+                bid.getBidder().getRating()
         );
     }
 }

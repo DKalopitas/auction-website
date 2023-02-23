@@ -14,11 +14,8 @@ public class Bidder {
     private Long id;
     @OneToOne(mappedBy = "bidder")
     private User user;
-    @Nonnull
-    private float rating;
-    @Nonnull
+    private Float rating;
     private String location;
-    @Nonnull
     private String country;
 
 }

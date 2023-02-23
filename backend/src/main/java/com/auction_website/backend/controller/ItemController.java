@@ -33,7 +33,7 @@ public class ItemController {
 
     @GetMapping("my-items/{itemId}")
     public ItemDTO getItem(@PathVariable Long itemId) {
-        return itemService.getItem(itemId);
+        return itemService.getItemDTO(itemId);
     }
 
     @PostMapping("my-items/new-item")

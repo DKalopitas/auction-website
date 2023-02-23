@@ -61,7 +61,17 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-    public ItemDTO getItem(Long itemId) {
+    public Item getItem(Long itemId) {
+        return itemRepository
+                .findById(itemId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(
+                                "Item with id " + itemId + " not found!"
+                        )
+                );
+    }
+
+    public ItemDTO getItemDTO(Long itemId) {
         Item item = itemRepository
                 .findById(itemId)
                 .orElseThrow(

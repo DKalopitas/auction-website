@@ -28,7 +28,7 @@ public class ItemManagementController {
 
     @GetMapping("{itemId}")
     public ItemDTO getItem(@PathVariable Long itemId) {
-        return itemService.getItem(itemId);
+        return itemService.getItemDTO(itemId);
     }
 
     @PostMapping("/new-item")
