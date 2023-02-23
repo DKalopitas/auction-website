@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Data @NoArgsConstructor
 public class Bidder {
@@ -13,12 +11,8 @@ public class Bidder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(mappedBy = "bidder")
-    private User user;
     private String location;
     private String country;
-    @OneToMany(mappedBy = "bidder")
-    private List<Bid> bids;
-    private Float rating;
+    private Float rating = 0.0f;
 
 }

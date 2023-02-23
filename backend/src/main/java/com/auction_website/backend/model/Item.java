@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class Item {
     @Column(name = "first_bid")
     private BigDecimal firstBid;
     @OneToMany(mappedBy = "item")
-    private List<Bid> bids;
+    private List<Bid> bids = new ArrayList<>();
     private String location;
     private Double latitude;
     private Double longitude;

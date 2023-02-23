@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +36,9 @@ public class BidService {
     }
 
     public List<BidDTO> getAllBids(Long itemId) {
-        return bidRepository
-                .findBidsByItem_Id(itemId)
+        Item item = itemService.getItem(itemId);
+        return item
+                .getBids()
                 .stream()
                 .map(bidDTOMapper)
                 .collect(Collectors.toList());
@@ -48,7 +51,6 @@ public class BidService {
     ) {
         if (bidDTO.bidder() != null
                 || bidDTO.bidderRating() != null
-                || bidDTO.time() == null
                 || bidDTO.amount() == null
                 || itemId == null
         ) {
@@ -57,8 +59,9 @@ public class BidService {
 
         User user = userService.loadUserByUsername(authentication.getName());
         Item item = itemService.getItem(itemId);
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
 
-        if (bidDTO.time().after(item.getStarted())) {
+        if (!time.after(item.getStarted())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (bidDTO.amount().compareTo(item.getCurrentPrice()) < 0) {
@@ -68,7 +71,7 @@ public class BidService {
         Bid bid = new Bid(
                 user.getBidder(),
                 item,
-                bidDTO.time(),
+                time,
                 bidDTO.amount()
         );
         bidRepository.save(bid);

@@ -13,12 +13,12 @@ public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "item_id", referencedColumnName = "id")
-    private Item item;
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bidder_id", referencedColumnName = "id")
     private Bidder bidder;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
+    private Item item;
     private Timestamp time;
     private BigDecimal amount;
 
