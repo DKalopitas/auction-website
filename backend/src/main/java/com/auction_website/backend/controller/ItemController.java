@@ -52,12 +52,12 @@ public class ItemController {
     }
 
     @GetMapping("my-items")
-    public List<ItemDTO> getAllItems(Authentication authentication) {
+    public List<ItemDTO> getAllMyItems(Authentication authentication) {
         return itemService.getAllItems(authentication);
     }
 
     @GetMapping("my-items/active")
-    public List<ItemDTO> getAllActiveItems(Authentication authentication) {
+    public List<ItemDTO> getAllMyActiveItems(Authentication authentication) {
         return itemService.getAllActiveItems(authentication);
     }
 
