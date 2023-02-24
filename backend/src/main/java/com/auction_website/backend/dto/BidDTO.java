@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 public record BidDTO(
-        Long id,
         Bidder bidder,
         Timestamp time,
         BigDecimal amount,
