@@ -3,7 +3,6 @@ package com.auction_website.backend.service;
 import com.auction_website.backend.dto.BidDTO;
 import com.auction_website.backend.dto.BidDTOMapper;
 import com.auction_website.backend.model.Bid;
-import com.auction_website.backend.model.Bidder;
 import com.auction_website.backend.model.Item;
 import com.auction_website.backend.model.User;
 import com.auction_website.backend.repository.BidRepository;
@@ -27,18 +26,13 @@ public class BidService {
     private final ItemService itemService;
     private final BidDTOMapper bidDTOMapper;
 
-    public List<BidDTO> getAllBids(Bidder bidder) {
+    public List<BidDTO> getAllBidderBidsInItem(
+            Authentication authentication,
+            Long itemId
+    ) {
+        User user = userService.loadUserByUsername(authentication.getName());
         return bidRepository
-                .findBidsByBidder(bidder)
-                .stream()
-                .map(bidDTOMapper)
-                .collect(Collectors.toList());
-    }
-
-    public List<BidDTO> getAllBids(Long itemId) {
-        Item item = itemService.getItem(itemId);
-        return item
-                .getBids()
+                .findBidsByBidderAndItem_Id(user.getBidder(), itemId)
                 .stream()
                 .map(bidDTOMapper)
                 .collect(Collectors.toList());

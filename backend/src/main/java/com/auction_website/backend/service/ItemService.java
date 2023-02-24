@@ -5,6 +5,7 @@ import com.auction_website.backend.dto.ItemDTOMapper;
 import com.auction_website.backend.exception.ResourceNotFoundException;
 import com.auction_website.backend.model.Item;
 import com.auction_website.backend.model.User;
+import com.auction_website.backend.repository.BidRepository;
 import com.auction_website.backend.repository.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final UserService userService;
+    private final BidRepository bidRepository;
     private final ItemDTOMapper itemDTOMapper;
 
     public List<ItemDTO> getAllItems() {
@@ -55,6 +57,28 @@ public class ItemService {
                 .findAllBySellerAndStartedIsBefore(
                         user.getSeller(),
                         Timestamp.valueOf(LocalDateTime.now())
+                )
+                .stream()
+                .map(itemDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> getAllItemsFromBids(Authentication authentication) {
+        User user = userService.loadUserByUsername(authentication.getName());
+        List<Long> bidIds = bidRepository.findBidsIdByBidder_Id(user.getBidder().getId());
+        return itemRepository
+                .findDistinctByIdIn(bidIds)
+                .stream()
+                .map(itemDTOMapper)
+                .collect(Collectors.toList());
+    }
+
+    public List<ItemDTO> getAllActiveItemsFromBids(Authentication authentication) {
+        User user = userService.loadUserByUsername(authentication.getName());
+        List<Long> bidIds = bidRepository.findBidsIdByBidder_Id(user.getBidder().getId());
+        return itemRepository
+                .findDistinctByIdInAndStartedIsBefore(
+                        bidIds, Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
                 .map(itemDTOMapper)

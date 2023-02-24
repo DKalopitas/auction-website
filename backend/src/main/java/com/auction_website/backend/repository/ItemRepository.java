@@ -17,4 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByStartedIsBefore(Timestamp time);
 
     List<Item> findAllBySellerAndStartedIsBefore(Seller seller, Timestamp time);
+
+    List<Item> findDistinctByIdIn(List<Long> bidIds);
+
+    List<Item> findDistinctByIdInAndStartedIsBefore(List<Long> bidIds, Timestamp time);
 }

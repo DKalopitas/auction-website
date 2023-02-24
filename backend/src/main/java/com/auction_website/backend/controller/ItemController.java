@@ -39,6 +39,16 @@ public class ItemController {
         return itemService.getItemDTO(itemId);
     }
 
+    @GetMapping("items/bidded")
+    public List<ItemDTO> getBiddedItems(Authentication authentication) {
+        return itemService.getAllItemsFromBids(authentication);
+    }
+
+    @GetMapping("items/active/bidded")
+    public List<ItemDTO> getActiveBiddedItems(Authentication authentication) {
+        return itemService.getAllActiveItemsFromBids(authentication);
+    }
+
     @GetMapping("my-items")
     public List<ItemDTO> getAllMyItems(Authentication authentication) {
         return itemService.getAllItems(authentication);
