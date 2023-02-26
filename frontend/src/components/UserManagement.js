@@ -16,9 +16,11 @@ function UserManagement() {
         phoneNumber: "",
         address: "",
         taxIdNumber: "",
+        sellerRating: 0.0,
+        bidderRating: 0.0,
         username: "",
         enabled: "",
-        userRole: []
+        userRole: [],
     });
     const labels = {
         firstName: "First Name",
@@ -27,6 +29,8 @@ function UserManagement() {
         phoneNumber: "Phone Number",
         address: "Address",
         taxIdNumber: "Tax ID",
+        sellerRating: "Seller Rating",
+        bidderRating: "Bidder Rating",
         username: "Username",
         enabled: "Account Status",
         userRole: "User Roles"
@@ -40,7 +44,19 @@ function UserManagement() {
             try {
                 const response = await axiosPrivate.get(`users/${pathname.substring(7)}`);
                 // console.log(response.data);
-                isMounted && setUser(response.data);
+                isMounted && setUser({
+                    username: response?.data?.username,
+                    firstName: response?.data?.firstName,
+                    lastName: response?.data?.lastName,
+                    email: response?.data?.email,
+                    phoneNumber: response?.data?.phoneNumber,
+                    address: response?.data?.address,
+                    taxIdNumber: response?.data?.taxIdNumber,
+                    enabled: response?.data?.enabled,
+                    userRole: response?.data?.userRole,
+                    sellerRating: response?.data?.sellerRating,
+                    bidderRating: response?.data?.bidderRating
+                });
             } catch(error) {
                 console.error(error);
             }
@@ -150,16 +166,20 @@ function UserManagement() {
                                             )
                                         })
                                     }
-                                    <div className="col-sm-2 ms-auto">
-                                        <button
-                                        type="button"
-                                        className="btn btn-dark p-2 mx-auto"
-                                        title="Delete Account"
-                                        onClick={handleDelete}
-                                        >
-                                            <i className="fa-solid fa-trash fa-2x text-danger"></i>
-                                        </button>
-                                    </div>
+                                    {
+                                        user.userRole.includes("ADMIN") ? null
+                                        : 
+                                        <div className="col-sm-4 d-flex align-items-center">
+                                            <button
+                                            type="button"
+                                            className="btn btn-dark p-2 ms-3"
+                                            title="Delete Account"
+                                            onClick={handleDelete}
+                                            >
+                                                <i className="fa-solid fa-trash fa-2x text-danger"></i>
+                                            </button>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>

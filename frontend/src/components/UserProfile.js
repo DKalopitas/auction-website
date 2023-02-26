@@ -34,6 +34,8 @@ const updateUserForm = z.object({
         .min(1, { message: "Tax ID is required" })
         .regex(/^[0-9]*$/, { message: "Tax ID must only contain digits" })
         .length(9, { message: "Tax ID must contain 9 digits" }),
+    sellerRating: z.number(),
+    bidderRating: z.number(),
     username: z.string()
         .min(1, { message: "Username is required" })
         .min(3, { message: "Username must contain at least 3 characters" })
@@ -73,6 +75,8 @@ function UserProfile() {
         phoneNumber: "Phone Number",
         address: "Address",
         taxIdNumber: "Tax ID",
+        sellerRating: "Seller Rating",
+        bidderRating: "Bidder Rating",
         username: "Username",
         enabled: "Account Status"
     };
@@ -259,6 +263,8 @@ function UserProfile() {
                                         if (key === "id"
                                         || key === "enabled"
                                         || key === "userRole"
+                                        || key === "sellerRating"
+                                        || key === "bidderRating"
                                         ) {
                                             setValue(key, user[key]);
                                             return (null);

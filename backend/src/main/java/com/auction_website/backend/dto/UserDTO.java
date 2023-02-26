@@ -5,16 +5,16 @@ import java.util.List;
 public record UserDTO(
         Long id,
         String username,
+        String email,
         String firstName,
         String lastName,
-        String email,
         String phoneNumber,
         String address,
         String taxIdNumber,
-        Float sellerRating,
-        Float bidderRating,
         Boolean enabled,
-        List<String> userRole
+        List<String> userRole,
+        Float sellerRating,
+        Float bidderRating
 
 ) {
 }
