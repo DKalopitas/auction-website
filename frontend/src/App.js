@@ -11,6 +11,7 @@ import NavbarComponent from './components/NavbarComponent';
 import LogInComponent from './components/LogInComponent';
 import UserManagement from './components/UserManagement'
 import UserProfile from './components/UserProfile';
+import ActiveItems from './components/ActiveItems';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               </RequireAuth>
               }
             />
+            <Route path='/items' element={<ActiveItems />} />
             <Route path='/sign-up' element={<SignUpComponent />} />
             <Route path='/log-in' element={<LogInComponent />} />
           </Routes>
