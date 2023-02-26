@@ -45,6 +45,7 @@ function UserManagement() {
                 const response = await axiosPrivate.get(`users/${pathname.substring(7)}`);
                 // console.log(response.data);
                 isMounted && setUser({
+                    id: response?.data?.id,
                     username: response?.data?.username,
                     firstName: response?.data?.firstName,
                     lastName: response?.data?.lastName,
