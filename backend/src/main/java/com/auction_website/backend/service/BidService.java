@@ -44,7 +44,6 @@ public class BidService {
             BidDTO bidDTO
     ) {
         if (bidDTO.bidder() != null
-                || bidDTO.bidderRating() != null
                 || bidDTO.amount() == null
                 || itemId == null
         ) {
@@ -55,7 +54,7 @@ public class BidService {
         Item item = itemService.getItem(itemId);
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
 
-        if (!time.after(item.getStarted())) {
+        if (time.before(item.getStarted())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if (bidDTO.amount().compareTo(item.getCurrentPrice()) < 0) {
