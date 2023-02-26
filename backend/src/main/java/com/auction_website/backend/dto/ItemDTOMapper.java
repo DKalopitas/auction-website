@@ -33,7 +33,10 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
                 item.getLongitude(),
                 item.getStarted(),
                 item.getEnds(),
-                item.getSeller().getRating(),
+                new SellerDTO(
+                        item.getSeller().getRating(),
+                        item.getSeller().getUser().getUsername()
+                ),
                 item.getDescription()
         );
     }

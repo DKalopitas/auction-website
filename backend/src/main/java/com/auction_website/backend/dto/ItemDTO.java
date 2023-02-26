@@ -19,7 +19,7 @@ public record ItemDTO(
         Double longitude,
         Timestamp started,
         Timestamp ends,
-        float sellerRating,
+        SellerDTO seller,
         String description
 ) {
 }
