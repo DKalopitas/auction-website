@@ -26,8 +26,6 @@ public class Item {
     private List<String> categories;
     @Column(name = "buy_price")
     private BigDecimal buyPrice;
-    @Column(name = "current_price")
-    private BigDecimal currentPrice;
     @Column(name = "first_bid")
     private BigDecimal firstBid;
     @OneToMany(mappedBy = "item")
@@ -64,7 +62,6 @@ public class Item {
         this.categories = categories;
         this.buyPrice = buyPrice;
         this.firstBid = firstBid;
-        currentPrice = firstBid;
         this.location = location;
         this.country = country;
         this.latitude = latitude;

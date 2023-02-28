@@ -4,8 +4,8 @@ import com.auction_website.backend.model.Item;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -14,19 +14,22 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
 
     @Override
     public ItemDTO apply(Item item) {
+        List<BidDTO> bids = item
+                .getBids()
+                .stream()
+                .map(bidDTOMapper)
+                .toList();
+        int numberOfBids = bids.size();
+
         return new ItemDTO(
                 item.getId(),
                 item.getName(),
                 item.getCategories(),
                 item.getBuyPrice(),
-                item.getCurrentPrice(),
+                bids.get(numberOfBids - 1).amount(),
                 item.getFirstBid(),
-                item.getBids().size(),
-                item
-                        .getBids()
-                        .stream()
-                        .map(bidDTOMapper)
-                        .collect(Collectors.toList()),
+                numberOfBids,
+                bids,
                 item.getLocation(),
                 item.getCountry(),
                 item.getLatitude(),

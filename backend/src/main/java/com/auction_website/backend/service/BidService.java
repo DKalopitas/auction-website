@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,12 +53,16 @@ public class BidService {
 
         User user = userService.loadUserByUsername(authentication.getName());
         Item item = itemService.getItem(itemId);
+        List<Bid> itemBids = item.getBids();
+        BigDecimal itemCurrentPrice = itemBids
+                .get(itemBids.size() - 1)
+                .getAmount();
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
 
         if (time.before(item.getStarted())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (bidDTO.amount().compareTo(item.getCurrentPrice()) < 0) {
+        if (bidDTO.amount().compareTo(itemCurrentPrice) < 0) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
