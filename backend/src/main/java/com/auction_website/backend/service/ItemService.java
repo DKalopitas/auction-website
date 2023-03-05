@@ -36,7 +36,10 @@ public class ItemService {
 
     public List<ItemDTO> getAllActiveItems() {
         return itemRepository
-                .findAllByStartedIsBefore(Timestamp.valueOf(LocalDateTime.now()))
+                .findAllByStartedBeforeAndEndsAfter(
+                        Timestamp.valueOf(LocalDateTime.now()),
+                        Timestamp.valueOf(LocalDateTime.now())
+                )
                 .stream()
                 .map(itemDTOMapper)
                 .collect(Collectors.toList());
@@ -54,8 +57,9 @@ public class ItemService {
     public List<ItemDTO> getAllActiveItems(Authentication authentication) {
         User user = userService.loadUserByUsername(authentication.getName());
         return itemRepository
-                .findAllBySellerAndStartedIsBefore(
+                .findAllBySellerAndStartedBeforeAndEndsAfter(
                         user.getSeller(),
+                        Timestamp.valueOf(LocalDateTime.now()),
                         Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
@@ -77,8 +81,10 @@ public class ItemService {
         User user = userService.loadUserByUsername(authentication.getName());
         List<Long> bidIds = bidRepository.findBidsIdByBidder_Id(user.getBidder().getId());
         return itemRepository
-                .findDistinctByIdInAndStartedIsBefore(
-                        bidIds, Timestamp.valueOf(LocalDateTime.now())
+                .findDistinctByIdInAndStartedBeforeAndEndsAfter(
+                        bidIds,
+                        Timestamp.valueOf(LocalDateTime.now()),
+                        Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
                 .map(itemDTOMapper)

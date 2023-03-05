@@ -14,11 +14,22 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findAllBySeller(Seller seller);
 
-    List<Item> findAllByStartedIsBefore(Timestamp time);
+    List<Item> findAllByStartedBeforeAndEndsAfter(
+            Timestamp time1,
+            Timestamp time2
+    );
 
-    List<Item> findAllBySellerAndStartedIsBefore(Seller seller, Timestamp time);
+    List<Item> findAllBySellerAndStartedBeforeAndEndsAfter(
+            Seller seller,
+            Timestamp time1,
+            Timestamp time2
+    );
 
     List<Item> findDistinctByIdIn(List<Long> bidIds);
 
-    List<Item> findDistinctByIdInAndStartedIsBefore(List<Long> bidIds, Timestamp time);
+    List<Item> findDistinctByIdInAndStartedBeforeAndEndsAfter(
+            List<Long> bidIds,
+            Timestamp time1,
+            Timestamp time2
+    );
 }
