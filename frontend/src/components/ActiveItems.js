@@ -8,6 +8,7 @@ function ActiveItems() {
 
     const navigate = useNavigate();
     const [itemList, setItemList] = useState([]);
+    const [fetchResponceStatus, setFetchResponseStatus] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
@@ -16,23 +17,23 @@ function ActiveItems() {
             try {
                 const response = await axios.get("/items/active");
                 // console.log(response?.data);
+                setFetchResponseStatus(true);
                 setItemList(response.data);
-                return (true);
             } catch(error) {
                 // console.log(error);
                 setErrorMessage(error?.message);
-                return (false);
             }
         }
-        const fetchDataSuccess = fetchData();
-        if (fetchDataSuccess === true) {
+        fetchData();
+
+        if (fetchResponceStatus === true) {
             const interval = setInterval(() => {
-                fetchData();
+                    fetchData();
             }, 30000);
             return () => clearInterval(interval);
         }
 
-    }, []);
+    }, [fetchResponceStatus]);
 
     function handleTimeDifferenceFromNow(date) {
         const endsAt = new Date(date);
