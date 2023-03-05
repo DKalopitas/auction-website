@@ -17,17 +17,20 @@ function ActiveItems() {
                 const response = await axios.get("/items/active");
                 // console.log(response?.data);
                 setItemList(response.data);
+                return (true);
             } catch(error) {
                 // console.log(error);
-                setErrorMessage(error);
+                setErrorMessage(error?.message);
+                return (false);
             }
         }
-        fetchData();
-
-        const interval = setInterval(() => {
-            fetchData();
-        }, 30000);
-        return () => clearInterval(interval);
+        const fetchDataSuccess = fetchData();
+        if (fetchDataSuccess === true) {
+            const interval = setInterval(() => {
+                fetchData();
+            }, 30000);
+            return () => clearInterval(interval);
+        }
 
     }, []);
 
@@ -108,11 +111,11 @@ function ActiveItems() {
             </div>
 
             <div className={"d-flex flex-wrap gap-4 m-5"}>
-                {
+                { (itemList.length > 0) ?
                     itemList.map((item) => {
                         return (
                             <button
-                            key={item.id}
+                            key={item["id"]}
                             className="btn btn-dark rounded-3 p-4 m-4 text-white"
                             onClick={handleItemSelection}
                             >
@@ -142,6 +145,8 @@ function ActiveItems() {
                             </button>
                         );
                     })
+                    :
+                    null
                 }
             </div>
             { errorMessage ? <ErrorPopup errorMessage={errorMessage} /> : null }
