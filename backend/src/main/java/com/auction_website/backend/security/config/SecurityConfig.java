@@ -10,6 +10,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -66,7 +67,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/v*/users/**")
                         .hasAuthority("SCOPE_ADMIN")
-                        .requestMatchers("/api/v*/items/active")
+                        .requestMatchers(HttpMethod.GET, "/api/v*/items/active/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
