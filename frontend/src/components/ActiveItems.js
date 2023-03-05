@@ -64,8 +64,8 @@ function ActiveItems() {
         );
     }
 
-    function handleItemSelection() {
-        console.log("selected");
+    function handleItemSelection(itemId) {
+        navigate(`${itemId}`, { state: {itemId: itemId} });
     }
 
     function countdownRenderer({hours, minutes, seconds, completed}) {
@@ -118,7 +118,7 @@ function ActiveItems() {
                             <button
                             key={item["id"]}
                             className="btn btn-dark rounded-3 p-4 m-4 text-white"
-                            onClick={handleItemSelection}
+                            onClick={() => handleItemSelection(item["id"])}
                             >
                                 <img
                                 // src="../../public/logo192.png"

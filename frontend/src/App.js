@@ -12,6 +12,7 @@ import LogInComponent from './components/LogInComponent';
 import UserManagement from './components/UserManagement'
 import UserProfile from './components/UserProfile';
 import ActiveItems from './components/ActiveItems';
+import Item from './components/Item';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
               }
             />
             <Route path='/items' element={<ActiveItems />} />
+            <Route path='/items/:id' element={<Item />} />
             <Route path='/sign-up' element={<SignUpComponent />} />
             <Route path='/log-in' element={<LogInComponent />} />
           </Routes>
