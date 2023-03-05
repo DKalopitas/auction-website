@@ -1,6 +1,7 @@
 package com.auction_website.backend.controller;
 
 import com.auction_website.backend.dto.ItemDTO;
+import com.auction_website.backend.dto.ListingItemDTO;
 import com.auction_website.backend.service.ItemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ItemController {
 
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     @GetMapping("items")
-    public List<ItemDTO> getAllItems() {
+    public List<ListingItemDTO> getAllItems() {
         return itemService.getAllItems();
     }
 
@@ -30,7 +31,7 @@ public class ItemController {
     }
 
     @GetMapping("items/active")
-    public List<ItemDTO> getAllActiveItems() {
+    public List<ListingItemDTO> getAllActiveItems() {
         return itemService.getAllActiveItems();
     }
 
@@ -40,22 +41,22 @@ public class ItemController {
     }
 
     @GetMapping("items/bidded")
-    public List<ItemDTO> getBiddedItems(Authentication authentication) {
+    public List<ListingItemDTO> getBiddedItems(Authentication authentication) {
         return itemService.getAllItemsFromBids(authentication);
     }
 
     @GetMapping("items/active/bidded")
-    public List<ItemDTO> getActiveBiddedItems(Authentication authentication) {
+    public List<ListingItemDTO> getActiveBiddedItems(Authentication authentication) {
         return itemService.getAllActiveItemsFromBids(authentication);
     }
 
     @GetMapping("my-items")
-    public List<ItemDTO> getAllMyItems(Authentication authentication) {
+    public List<ListingItemDTO> getAllMyItems(Authentication authentication) {
         return itemService.getAllItems(authentication);
     }
 
     @GetMapping("my-items/active")
-    public List<ItemDTO> getAllMyActiveItems(Authentication authentication) {
+    public List<ListingItemDTO> getAllMyActiveItems(Authentication authentication) {
         return itemService.getAllActiveItems(authentication);
     }
 

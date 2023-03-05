@@ -2,6 +2,8 @@ package com.auction_website.backend.service;
 
 import com.auction_website.backend.dto.ItemDTO;
 import com.auction_website.backend.dto.ItemDTOMapper;
+import com.auction_website.backend.dto.ListingItemDTO;
+import com.auction_website.backend.dto.ListingItemDTOMapper;
 import com.auction_website.backend.exception.ResourceNotFoundException;
 import com.auction_website.backend.model.Item;
 import com.auction_website.backend.model.User;
@@ -25,36 +27,37 @@ public class ItemService {
     private final UserService userService;
     private final BidRepository bidRepository;
     private final ItemDTOMapper itemDTOMapper;
+    private final ListingItemDTOMapper listingItemDTOMapper;
 
-    public List<ItemDTO> getAllItems() {
+    public List<ListingItemDTO> getAllItems() {
         return itemRepository
                 .findAll()
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getAllActiveItems() {
+    public List<ListingItemDTO> getAllActiveItems() {
         return itemRepository
                 .findAllByStartedBeforeAndEndsAfter(
                         Timestamp.valueOf(LocalDateTime.now()),
                         Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getAllItems(Authentication authentication) {
+    public List<ListingItemDTO> getAllItems(Authentication authentication) {
         User user = userService.loadUserByUsername(authentication.getName());
         return itemRepository
                 .findAllBySeller(user.getSeller())
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getAllActiveItems(Authentication authentication) {
+    public List<ListingItemDTO> getAllActiveItems(Authentication authentication) {
         User user = userService.loadUserByUsername(authentication.getName());
         return itemRepository
                 .findAllBySellerAndStartedBeforeAndEndsAfter(
@@ -63,21 +66,21 @@ public class ItemService {
                         Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getAllItemsFromBids(Authentication authentication) {
+    public List<ListingItemDTO> getAllItemsFromBids(Authentication authentication) {
         User user = userService.loadUserByUsername(authentication.getName());
         List<Long> bidIds = bidRepository.findBidsIdByBidder_Id(user.getBidder().getId());
         return itemRepository
                 .findDistinctByIdIn(bidIds)
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
-    public List<ItemDTO> getAllActiveItemsFromBids(Authentication authentication) {
+    public List<ListingItemDTO> getAllActiveItemsFromBids(Authentication authentication) {
         User user = userService.loadUserByUsername(authentication.getName());
         List<Long> bidIds = bidRepository.findBidsIdByBidder_Id(user.getBidder().getId());
         return itemRepository
@@ -87,7 +90,7 @@ public class ItemService {
                         Timestamp.valueOf(LocalDateTime.now())
                 )
                 .stream()
-                .map(itemDTOMapper)
+                .map(listingItemDTOMapper)
                 .collect(Collectors.toList());
     }
 
