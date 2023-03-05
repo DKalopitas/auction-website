@@ -46,6 +46,11 @@ export default function NavbarComponent() {
         return(
             <React.Fragment>
                 <li className="nav-item">
+                    <Link to="/items" className="nav-link">
+                        Items
+                    </Link>
+                </li>
+                <li className="nav-item">
                     <Link to="/log-in" className="nav-link">
                         Log In
                     </Link>
