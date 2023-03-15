@@ -35,7 +35,7 @@ function ListUserComponent() {
     return (
         <div>
             <div className="text-center">
-                <h2 className="mt-5 pt-3 text-white">Users List</h2>
+                <h1 className="fw-bold mt-5 pt-3">Users</h1>
                 <div className="mx-5">
                     <table className="table table-dark table-hover align-middle mt-4">
                         <thead className="bg-light">
