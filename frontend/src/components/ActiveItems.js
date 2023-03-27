@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import ErrorPopup from './ErrorPopup'
-import Countdown from 'react-countdown';
+import TimeDifference from './TimeDifference';
 
 function ActiveItems() {
 
@@ -35,74 +35,8 @@ function ActiveItems() {
 
     }, [fetchResponceStatus]);
 
-    function handleTimeDifferenceFromNow(date) {
-        const endsAt = new Date(date);
-        // const endsAt = new Date(2023, 2, 4, 22, 55, 0);
-        const currentDate = new Date();
-        if (endsAt.getFullYear() > currentDate.getFullYear()) {
-            return (String(endsAt.getFullYear()));
-        }
-        const daysDifference = Math.floor((endsAt.getTime() - currentDate.getTime()) / (24*3600*1000));
-        if (daysDifference > 30) {
-            const monthDifference = endsAt.getMonth() - currentDate.getMonth();
-            if (monthDifference === 1) {
-                return (String(monthDifference) + " month");
-            }
-            return (String(monthDifference) + " months");
-        }
-        if (daysDifference > 0) {
-            if (daysDifference === 1) {
-                return (String(daysDifference) + " day");
-            }
-            return (String(daysDifference) + " days");
-        }
-        return (
-            <Countdown 
-            date={endsAt} 
-            renderer={countdownRenderer}
-            />
-        );
-    }
-
     function handleItemSelection(itemId) {
         navigate(`${itemId}`, { state: {itemId: itemId} });
-    }
-
-    function countdownRenderer({hours, minutes, seconds, completed}) {
-        function handleHours(hours) {
-            if (hours === 1) {
-                return (hours + " hour")
-            }
-            return (hours + " hours");
-        }
-        function handleMinutes(minutes) {
-            if (minutes < 10) {
-                return ("0" + minutes);
-            }
-            return (minutes);
-        }
-        function handleSeconds(seconds) {
-            if (seconds < 10) {
-                return ("0" + seconds);
-            }
-            return (seconds);
-        }
-
-        if (completed) {
-            return (
-                <span className="text-danger">Expired</span>
-            );
-        }
-        if (hours < 1) {
-            return (
-                <span className="text-danger">
-                    {handleMinutes(minutes)}:{handleSeconds(seconds)}
-                </span>
-            );
-        }
-        return (
-            <span>{handleHours(hours)}</span>
-        );
     }
 
     return (
@@ -139,8 +73,9 @@ function ActiveItems() {
                                             Bids: {item["numberOfBids"]}
                                         </div>
                                     </div>
-                                    <div className="fs-5">
-                                        Ends in {handleTimeDifferenceFromNow(item["ends"])}
+                                    <div className="fs-5 d-flex justify-content-center gap-1">
+                                        Ends in
+                                        <TimeDifference date={item["ends"]} />
                                     </div>
                                 </div>
                             </button>
