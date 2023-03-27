@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -20,9 +21,9 @@ public class BidController {
     public ResponseEntity<?> saveBid(
             Authentication authentication,
             @PathVariable Long itemId,
-            @RequestBody BidDTO bidDTO
+            @RequestParam BigDecimal bidAmount
     ) {
-        return bidService.saveBid(authentication, itemId, bidDTO);
+        return bidService.saveBid(authentication, itemId, bidAmount);
     }
 
     @GetMapping("items/bidded/{itemId}")

@@ -42,14 +42,15 @@ public class BidService {
     public ResponseEntity<?> saveBid(
             Authentication authentication,
             Long itemId,
-            BidDTO bidDTO
+            BigDecimal bidAmount
+//            BidDTO bidDTO
     ) {
-        if (bidDTO.bidder() != null
-                || bidDTO.amount() == null
-                || itemId == null
-        ) {
-            throw new IllegalStateException("Invalid Data!");
-        }
+//        if (bidDTO.bidder() != null
+//                || bidDTO.amount() == null
+//                || itemId == null
+//        ) {
+//            throw new IllegalStateException("Invalid Data!");
+//        }
 
         User user = userService.loadUserByUsername(authentication.getName());
         Item item = itemService.getItem(itemId);
@@ -62,7 +63,7 @@ public class BidService {
         if (time.before(item.getStarted())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (bidDTO.amount().compareTo(itemCurrentPrice) < 0) {
+        if (bidAmount.compareTo(itemCurrentPrice) < 0) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
@@ -70,7 +71,7 @@ public class BidService {
                 user.getBidder(),
                 item,
                 time,
-                bidDTO.amount()
+                bidAmount
         );
         bidRepository.save(bid);
         return new ResponseEntity<>(HttpStatus.OK);
