@@ -110,9 +110,9 @@ function Item() {
         const endHoursMinutes = endsAt.toLocaleString("en-us", { 
                 hour: 'numeric', 
                 minute: 'numeric', 
-                hour12: true 
+                hour12: true
         })
-        if (daysDifference > 0) {
+        if (daysDifference > 1) {
             return (
                 <div>
                     {
@@ -120,6 +120,13 @@ function Item() {
                         + " "
                         + endHoursMinutes
                     }
+                </div>
+            );
+        }
+        if (daysDifference === 1) {
+            return (
+                <div>
+                    { "Tomorrow at " + endHoursMinutes }
                 </div>
             );
         }
