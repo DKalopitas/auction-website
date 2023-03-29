@@ -13,6 +13,7 @@ import UserManagement from './components/UserManagement'
 import UserProfile from './components/UserProfile';
 import ActiveItems from './components/ActiveItems';
 import Item from './components/Item';
+import CreateItem from './components/CreateItem';
 
 function App() {
   return (
@@ -41,6 +42,12 @@ function App() {
             <Route path='/:username' element={
               <RequireAuth loginPath={'/log-in'}>
                 <UserProfile />
+              </RequireAuth>
+              }
+            />
+            <Route path='/new-item' element={
+              <RequireAuth loginPath={'/log-in'}>
+                <CreateItem />
               </RequireAuth>
               }
             />

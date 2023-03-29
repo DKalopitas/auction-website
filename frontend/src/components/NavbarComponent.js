@@ -23,6 +23,11 @@ export default function NavbarComponent() {
                                 Items
                             </Link>
                         </li>
+                        <li className="nav-item">
+                            <Link to="/new-item" className="nav-link">
+                                Sell Item
+                            </Link>
+                        </li>
                     </React.Fragment>
                 )
             }
@@ -32,6 +37,11 @@ export default function NavbarComponent() {
                         <li className="nav-item">
                             <Link to="/items" className="nav-link">
                                 Items
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/new-item" className="nav-link">
+                                Sell Item
                             </Link>
                         </li>
                         <li className="nav-item">
