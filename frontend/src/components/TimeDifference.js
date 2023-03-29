@@ -3,25 +3,48 @@ import Countdown from 'react-countdown';
 
 function TimeDifference({date}) {
 
-    function handleTimeDifferenceFromNow(date) {
+    function handleDateDifferenceFromNow(date) {
         const endsAt = new Date(date);
         const currentDate = new Date();
-        if (endsAt.getFullYear() > currentDate.getFullYear()) {
-            return (String(endsAt.getFullYear()));
+        const daysDifference = Math.floor(
+            (endsAt.getTime() - currentDate.getTime()) / (24*3600*1000)
+        );
+        if (daysDifference > 364) {
+            const yearDifference = endsAt.getFullYear() - currentDate.getFullYear();
+            if (yearDifference === 1) {
+                return (
+                    <span>
+                        {"1 year"}
+                    </span>
+                );
+            }
+            return (
+                <span>
+                    {yearDifference + " years"}
+                </span>
+            );
         }
-        const daysDifference = Math.floor((endsAt.getTime() - currentDate.getTime()) / (24*3600*1000));
         if (daysDifference > 30) {
             const monthDifference = endsAt.getMonth() - currentDate.getMonth();
             if (monthDifference === 1) {
-                return (String(monthDifference) + " month");
+                return (
+                    <span>
+                        {"1 month"}
+                    </span>
+                );
             }
-            return (String(monthDifference) + " months");
+            return (
+                <span>
+                    {monthDifference + " months"}
+                </span>
+            );
         }
-        if (daysDifference > 0) {
-            if (daysDifference === 1) {
-                return (String(daysDifference) + " day");
-            }
-            return (String(daysDifference) + " days");
+        if (daysDifference > 1) {
+            return (
+                <span>
+                    {daysDifference + " days"}
+                </span>
+            );
         }
         return (
             <Countdown 
@@ -68,11 +91,7 @@ function TimeDifference({date}) {
         );
     }
 
-    return (
-        <div>
-            {handleTimeDifferenceFromNow(date)}
-        </div>
-    );
+    return (handleDateDifferenceFromNow(date));
 }
 
 export default TimeDifference;
