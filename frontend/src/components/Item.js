@@ -42,7 +42,7 @@ function Item() {
         async function fetchData() {
             try {
                 const response = await axios.get(`/items/active/${itemId}`);
-                console.log(response?.data);
+                // console.log(response?.data);
                 setItem({
                     id: response.data.id,
                     name: response.data.name,
@@ -202,7 +202,7 @@ function Item() {
 
     return (
         <div>
-            <div className="bg-dark text-white text-center rounded-3 p-4 m-5 col-8 mx-auto">
+            <div className="bg-dark text-white text-center rounded-3 p-4 m-5 col-9 mx-auto">
                 <div className="mb-4 fs-3">
                     {item.name}
                 </div>
