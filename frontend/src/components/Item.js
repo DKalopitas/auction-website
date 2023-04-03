@@ -42,7 +42,7 @@ function Item() {
         async function fetchData() {
             try {
                 const response = await axios.get(`/items/active/${itemId}`);
-                // console.log(response?.data);
+                console.log(response?.data);
                 setItem({
                     id: response.data.id,
                     name: response.data.name,
@@ -106,7 +106,7 @@ function Item() {
                 </div>
             );
         }
-        const endDay = endsAt.toLocaleString("en-us", { day: "long" });
+        const endDay = endsAt.toLocaleString("en-us", { weekday: "long" });
         const endHoursMinutes = endsAt.toLocaleString("en-us", { 
                 hour: 'numeric', 
                 minute: 'numeric', 
