@@ -4,7 +4,6 @@ import com.auction_website.backend.model.Item;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Function;
 
@@ -20,22 +19,20 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
                 .stream()
                 .map(bidDTOMapper)
                 .toList();
-        int numberOfBids = bids.size();
-        BigDecimal currentPrice;
-        if (numberOfBids == 0) {
-            currentPrice = item.getFirstBid();
-        } else {
-            currentPrice = bids.get(numberOfBids - 1).amount();
-        }
+
+        SellerDTO seller = new SellerDTO(
+                item.getSeller().getRating(),
+                item.getSeller().getUser().getUsername()
+        );
 
         return new ItemDTO(
                 item.getId(),
                 item.getName(),
                 item.getCategories(),
                 item.getBuyPrice(),
-                currentPrice,
+                item.getCurrentPrice(),
                 item.getFirstBid(),
-                numberOfBids,
+                item.getNumberOfBids(),
                 bids,
                 item.getLocation(),
                 item.getCountry(),
@@ -43,10 +40,7 @@ public class ItemDTOMapper implements Function<Item, ItemDTO> {
                 item.getLongitude(),
                 item.getStarted(),
                 item.getEnds(),
-                new SellerDTO(
-                        item.getSeller().getRating(),
-                        item.getSeller().getUser().getUsername()
-                ),
+                seller,
                 item.getDescription()
         );
     }

@@ -125,7 +125,6 @@ public class ItemService {
                 || itemDTO.categories() == null
                 || itemDTO.categories().isEmpty()
                 || itemDTO.categories().stream().anyMatch(String::isBlank)
-                || itemDTO.buyPrice() == null
                 || itemDTO.firstBid() == null
                 || itemDTO.location() == null
                 || itemDTO.location().isBlank()

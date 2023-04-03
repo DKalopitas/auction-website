@@ -72,4 +72,16 @@ public class Item {
         this.description = description;
     }
 
+    public int getNumberOfBids() {
+        return bids.size();
+    }
+
+    public BigDecimal getCurrentPrice() {
+        int numberOfBids = bids.size();
+        if (numberOfBids == 0) {
+            return firstBid;
+        }
+        return bids.get(numberOfBids - 1).getAmount();
+    }
+
 }
